@@ -1,0 +1,18 @@
+image: node:9.4-alpine
+
+pages:
+  stage: deploy
+  script:
+    - apk update
+    - apk add bash
+    - npm install
+    - npm run build
+    - rm -rf public
+    - cp -r dist public
+    - cd public; ls
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+

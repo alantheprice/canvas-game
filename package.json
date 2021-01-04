@@ -1,0 +1,40 @@
+{
+  "name": "htmlGame",
+  "version": "0.0.1",
+  "description": "game test in html",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run package && webpack --config webpack.config.js --production",
+    "build:dev": "npm run package && webpack --config webpack.config.js --development",
+    "dev-server": "webpack-dev-server --config webpack.config.js --open",
+    "package": "/bin/bash package.sh",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run build:dev && npm run dev-server",
+    "start-docker": "sudo /bin/bash develop.sh"
+  },
+  "author": "alan@theprices.us",
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/preset-typescript": "^7.10.4",
+    "babel": "^6.23.0",
+    "babel-loader": "^8.0.4",
+    "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "cli": "^1.0.1",
+    "css-loader": "^4.3.0",
+    "ele-mint": "2.2.0",
+    "es6-import": "1.6.5",
+    "html-webpack-plugin": "^4.4.1",
+    "sass": "^1.26.10",
+    "sass-loader": "^10.0.2",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "bkgdr": "^1.1.2",
+    "crypto-js": "^4.0.0"
+  }
+}
