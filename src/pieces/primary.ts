@@ -15,7 +15,7 @@ const LAYOUT: LayoutData[] = [
     "r",
     { x: 0, y: 20, w: WIDTH, h: HEIGHT - 34 },
     "#666",
-    // { width: 2, color: "#777" },
+    { width: 2, color: "#777" },
   ],
   [
     "p",
@@ -32,7 +32,7 @@ const LAYOUT: LayoutData[] = [
       [8, 10],
       [8, HEIGHT - 10],
     ],
-    "#AAA",
+    "#555",
     3,
   ],
   [
@@ -50,30 +50,46 @@ const LAYOUT: LayoutData[] = [
       [WIDTH - 8, 10],
       [WIDTH - 8, HEIGHT - 10],
     ],
-    "#AAA",
+    "#555",
     3,
   ],
   [
     "p",
     [
-      [WIDTH / 2 - 10, HEIGHT - 5],
-
+      [WIDTH / 2 - 8, HEIGHT - 15],
       [WIDTH / 2 - 1, 2],
       [WIDTH / 2, 2],
       [WIDTH / 2 + 1, 2],
-      [WIDTH / 2 + 10, HEIGHT - 5],
+      [WIDTH / 2 + 8, HEIGHT - 15],
     ],
-    "#777",
+    "#555",
     10,
   ],
-
+  [
+    "p",
+    [
+      [WIDTH / 2, 10],
+      [WIDTH / 2, 20],
+    ],
+    "#AAA",
+    5,
+  ],
   [
     "c",
-    { x: WIDTH / 2, y: HEIGHT / 2 + 10, diameter: HEIGHT / 6 },
-    "#46E",
+    { x: WIDTH / 2, y: HEIGHT / 2 + 15, diameter: 10 },
+    "#777",
     {
       width: 4,
-      color: "#34A",
+      color: "#555",
+    },
+  ],
+  [
+    "c",
+    { x: WIDTH / 2, y: HEIGHT / 2 + 15, diameter: 5 },
+    "#45E",
+    {
+      width: 2,
+      color: "#4555E9",
     },
   ],
 ];
@@ -111,13 +127,6 @@ function create(
   function render() {
     // render movements
     objectKeys(currentMovements).values.forEach((x) => x());
-
-    // const frame = pointFunctions(location).toRect(WIDTH, HEIGHT);
-    // draw.drawRect(frame, "#404040", { width: 4, color: "#777" });
-    // draw.drawCircle(rectFunctions(frame).circle(), "#4060ee", {
-    //   width: 4,
-    //   color: "#777",
-    // });
     renderer(LAYOUT, location);
   }
 
