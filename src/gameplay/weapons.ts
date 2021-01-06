@@ -1,10 +1,4 @@
-import { LayoutData } from "../drawing/rendering";
-
-export interface Weapon {
-  speed: number;
-  power: number;
-  layout: LayoutData[];
-}
+import { Weapon } from "../pieces/types";
 
 export const LASER: Weapon = {
   speed: 900,

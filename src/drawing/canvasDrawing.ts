@@ -1,4 +1,4 @@
-import { Rect, Circle, rect, Point } from "./dimensions";
+import { Rect, Circle, rect, Point, rectFunctions } from "./dimensions";
 
 export interface Stroke {
   width: number;
@@ -148,12 +148,7 @@ export default function canvasDrawing(canvas: HTMLCanvasElement) {
   }
 
   function inFrame(point): boolean {
-    return (
-      point.x >= edges.x &&
-      point.y >= edges.y &&
-      point.y <= edges.h &&
-      point.x <= edges.w
-    );
+    return rectFunctions(edges).inFrame(point);
   }
 
   return {

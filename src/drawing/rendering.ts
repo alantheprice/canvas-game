@@ -1,5 +1,5 @@
 import { Draw, Stroke } from "../drawing/canvasDrawing";
-import { Circle, Point, rect, Rect } from "../drawing/dimensions";
+import { Circle, Point, Rect } from "../drawing/dimensions";
 
 type XY = [number, number];
 type Points = XY[];

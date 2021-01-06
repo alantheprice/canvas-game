@@ -19,6 +19,7 @@ export interface RectFunctions {
   circle: (diameter?: number) => Circle;
   getPoint: () => Point;
   setPoint: (point: Point) => void;
+  inFrame: (point: Point) => boolean;
 }
 
 export interface Circle {
@@ -46,38 +47,33 @@ export function rect(
 }
 
 export function rectFunctions(rectangle: Rect) {
+  const r = rectangle;
   return {
     getPoint: function () {
-      return point(rectangle.x, rectangle.y);
+      return point(r.x, r.y);
     },
     setPoint: function (point: Point) {
-      rectangle.x = point.x;
-      rectangle.y = point.y;
+      r.x = point.x;
+      r.y = point.y;
     },
     shrink: function (num: number) {
-      return rect(
-        rectangle.x + num,
-        rectangle.y + num,
-        rectangle.w - num * 2,
-        rectangle.h - num * 2
-      );
+      return rect(r.x + num, r.y + num, r.w - num * 2, r.h - num * 2);
     },
     expand: function (num: number) {
-      return rect(
-        rectangle.x - num,
-        rectangle.y - num,
-        rectangle.w + num * 2,
-        rectangle.h + num * 2
-      );
+      return rect(r.x - num, r.y - num, r.w + num * 2, r.h + num * 2);
     },
     circle: function (diameter?: number) {
       if (!diameter) {
-        diameter = Math.min(rectangle.w, rectangle.h) / 2;
+        diameter = Math.min(r.w, r.h) / 2;
       }
-      return circle(
-        rectangle.x + rectangle.w / 2,
-        rectangle.y + rectangle.h / 2,
-        diameter
+      return circle(r.x + r.w / 2, r.y + r.h / 2, diameter);
+    },
+    inFrame: function (point: Point): boolean {
+      return (
+        point.x >= r.x &&
+        point.y >= r.y &&
+        point.y <= r.y + r.h &&
+        point.x <= r.x + r.w
       );
     },
   };

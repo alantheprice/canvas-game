@@ -38,7 +38,7 @@ function game(draw: Draw) {
   // Starting game piece location (center of screen)
   let location = point(draw.dimensions.w / 2 - 25, draw.dimensions.h - 100);
   const primaryPiece = primary(draw, renderer, location, fire);
-  const badies = [
+  let badies = [
     badGuy(draw, renderer, { x: 0, y: 10 }, fire),
     badGuy(draw, renderer, { x: 100, y: 10 }, fire),
     badGuy(draw, renderer, { x: 200, y: 10 }, fire),
@@ -50,6 +50,17 @@ function game(draw: Draw) {
     badGuy(draw, renderer, { x: 250, y: 60 }, fire),
     badGuy(draw, renderer, { x: 350, y: 60 }, fire),
     badGuy(draw, renderer, { x: 450, y: 60 }, fire),
+    badGuy(draw, renderer, { x: 0, y: 150 }, fire),
+    badGuy(draw, renderer, { x: 100, y: 150 }, fire),
+    badGuy(draw, renderer, { x: 200, y: 150 }, fire),
+    badGuy(draw, renderer, { x: 300, y: 150 }, fire),
+    badGuy(draw, renderer, { x: 400, y: 150 }, fire),
+    badGuy(draw, renderer, { x: 500, y: 150 }, fire),
+    badGuy(draw, renderer, { x: 50, y: 300 }, fire),
+    badGuy(draw, renderer, { x: 150, y: 300 }, fire),
+    badGuy(draw, renderer, { x: 250, y: 300 }, fire),
+    badGuy(draw, renderer, { x: 350, y: 300 }, fire),
+    badGuy(draw, renderer, { x: 450, y: 300 }, fire),
   ];
 
   // Setup for FPS readout
@@ -80,11 +91,14 @@ function game(draw: Draw) {
         },
       };
     });
+    // weapons should only show while in the canvas.
     weapons = weapons.filter((w) => draw.inFrame(w.location));
     draw.clear();
     weapons.forEach((w) => renderer(w.weapon.layout, w.location));
     draw.drawText(point(20, 50), `FPS: ${fps}`, "20px Arial");
     primaryPiece.render();
+    badies.forEach((x) => weapons.forEach((w) => x.hit(w.location)));
+    badies = badies.filter((x) => x.shouldRender());
     badies.forEach((b) => b.render());
   }, MILLISECONDS_BETWEEN_FRAMES);
 }

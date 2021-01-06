@@ -1,8 +1,14 @@
 import { Draw } from "../drawing/canvasDrawing";
 import { LayoutData, Renderer } from "../drawing/rendering";
-import { point, Point } from "../drawing/dimensions";
-import { LASER, Weapon } from "../gameplay/weapons";
-import { Piece, PieceFactory } from "./types";
+import {
+  point,
+  Point,
+  pointFunctions,
+  rect,
+  rectFunctions,
+} from "../drawing/dimensions";
+import { LASER } from "../gameplay/weapons";
+import { Fire, Piece, PieceFactory } from "./types";
 import { Direction } from "../game";
 import { MOVEMENT_FRAME_DISTANCE } from "../constants";
 
@@ -47,10 +53,13 @@ function create(
   draw: Draw,
   renderer: Renderer,
   location: Point,
-  fire: (weapon: Weapon, location: Point, direction?: Direction) => void
+  fire: Fire
 ): Piece {
+  // Clean up this factory to have different types of movement and different types of layouts
   const LIMIT_RIGHT = draw.dimensions.w - WIDTH;
   let currentDirection = Direction.RIGHT;
+  let currentRect = pointFunctions(location).toRect(WIDTH, HEIGHT);
+  let destroyed = false;
 
   const movements = {
     LEFT: () =>
@@ -70,6 +79,7 @@ function create(
     }
     const movement = movements[currentDirection];
     movement();
+    currentRect = pointFunctions(location).toRect(WIDTH, HEIGHT);
   }
 
   function fireLasers() {
@@ -85,22 +95,40 @@ function create(
     );
   }
 
+  function shouldRender() {
+    return !destroyed;
+  }
+
   function render() {
     const randomize = Math.random();
     if (randomize > 0.99) {
-      fireLasers();
+      // fireLasers();
     }
-    // if (randomize < 0.02) {
+    // Maybe randomize this a bit?
     move();
-    // }
 
     renderer(LAYOUT, location);
   }
 
+  function getHitRect() {
+    return rect(0, 0, 20);
+  }
+
+  function hit(point: Point) {
+    if (rectFunctions(currentRect).inFrame(point)) {
+      destroyed = true;
+      console.log("hit!!!");
+    }
+    return destroyed;
+  }
+
   return {
-    render: render,
     getLocation: () => location,
     setLocation: (location) => location,
+    render: render,
+    shouldRender: shouldRender,
+    getHitRect: getHitRect,
+    hit: hit,
   };
 }
 
