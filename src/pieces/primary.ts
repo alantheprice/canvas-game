@@ -1,11 +1,17 @@
 import { MOVEMENT_FRAME_DISTANCE, WEAPON_FRAME_DISTANCE } from "../constants";
 import { Draw } from "../drawing/canvasDrawing";
 import { LayoutData, Renderer } from "../drawing/rendering";
-import { point, Point } from "../drawing/dimensions";
-import { LASER, Weapon } from "../gameplay/weapons";
+import {
+  point,
+  Point,
+  pointFunctions,
+  rect,
+  rectFunctions,
+} from "../drawing/dimensions";
+import { LASER } from "../gameplay/weapons";
 import { KEY_MAP, PressType, subscribe } from "../keyboardHandler";
 import { objectKeys } from "../utils";
-import { Piece, PieceFactory } from "./types";
+import { Piece, PieceFactory, Weapon } from "./types";
 
 const HEIGHT = 55;
 const WIDTH = 80;
@@ -100,6 +106,9 @@ function create(
   location: Point,
   fire: (weapon: Weapon, origin: Point) => void
 ): Piece {
+  let currentRect = pointFunctions(location).toRect(WIDTH, HEIGHT);
+  let damage = 20;
+
   const currentMovements = {};
   const movementDirections = {
     up: () => (location.y = Math.max(location.y - MOVEMENT_FRAME_DISTANCE, 0)),
@@ -127,6 +136,9 @@ function create(
   function render() {
     // render movements
     objectKeys(currentMovements).values.forEach((x) => x());
+    currentRect = pointFunctions(location).toRect(WIDTH, HEIGHT);
+    /// Renderer should also take in number of hit points, vs total and add red or green dots for life left...
+    // Should also move this piece into a universal piece that takes a configuration as a variable to reduce duplication.
     renderer(LAYOUT, location);
   }
 
@@ -156,10 +168,24 @@ function create(
     }
   }
 
+  function shouldRender() {
+    return damage > 0;
+  }
+
+  function hit(point: Point) {
+    if (rectFunctions(currentRect).inFrame(point)) {
+      console.log("hit!!!");
+      damage = damage - 1;
+    }
+    return damage < 1;
+  }
+
   return {
-    render: render,
     getLocation: () => location,
     setLocation: (location) => location,
+    render: render,
+    shouldRender: shouldRender,
+    hit: hit,
   };
 }
 

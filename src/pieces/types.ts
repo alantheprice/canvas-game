@@ -18,7 +18,6 @@ export interface Piece {
   setLocation: (point: Point) => void;
   render: () => void;
   shouldRender: () => boolean;
-  getHitRect: () => Rect;
   hit: (point: Point) => boolean;
 }
 

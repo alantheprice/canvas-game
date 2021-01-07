@@ -59,7 +59,7 @@ function create(
   const LIMIT_RIGHT = draw.dimensions.w - WIDTH;
   let currentDirection = Direction.RIGHT;
   let currentRect = pointFunctions(location).toRect(WIDTH, HEIGHT);
-  let destroyed = false;
+  let damage = 4;
 
   const movements = {
     LEFT: () =>
@@ -95,14 +95,10 @@ function create(
     );
   }
 
-  function shouldRender() {
-    return !destroyed;
-  }
-
   function render() {
     const randomize = Math.random();
-    if (randomize > 0.99) {
-      // fireLasers();
+    if (randomize > 0.995) {
+      fireLasers();
     }
     // Maybe randomize this a bit?
     move();
@@ -110,16 +106,17 @@ function create(
     renderer(LAYOUT, location);
   }
 
-  function getHitRect() {
-    return rect(0, 0, 20);
+  function shouldRender() {
+    // this should also really return the correct
+    return damage > 0;
   }
 
   function hit(point: Point) {
     if (rectFunctions(currentRect).inFrame(point)) {
-      destroyed = true;
       console.log("hit!!!");
+      damage = damage - 1;
     }
-    return destroyed;
+    return damage < 1;
   }
 
   return {
@@ -127,7 +124,6 @@ function create(
     setLocation: (location) => location,
     render: render,
     shouldRender: shouldRender,
-    getHitRect: getHitRect,
     hit: hit,
   };
 }

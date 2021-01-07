@@ -2,14 +2,10 @@ import utils from "./utils";
 import canvasDrawing, { Draw } from "./drawing/canvasDrawing";
 import { Point, point } from "./drawing/dimensions";
 import primary from "./pieces/primary";
-import {
-  distancePerFrame,
-  MILLISECONDS_BETWEEN_FRAMES,
-  WEAPON_FRAME_DISTANCE,
-} from "./constants";
+import { distancePerFrame, MILLISECONDS_BETWEEN_FRAMES } from "./constants";
 import { createRenderer } from "./drawing/rendering";
-import { Weapon } from "./gameplay/weapons";
 import badGuy from "./pieces/badGuy";
+import { Weapon } from "./pieces/types";
 
 export enum Direction {
   UP = "UP",
@@ -35,9 +31,9 @@ function game(draw: Draw) {
     });
   };
   const renderer = createRenderer(draw);
-  // Starting game piece location (center of screen)
+  // Starting game piece location (bottom, center of screen)
   let location = point(draw.dimensions.w / 2 - 25, draw.dimensions.h - 100);
-  const primaryPiece = primary(draw, renderer, location, fire);
+  let primaryPiece = primary(draw, renderer, location, fire);
   let badies = [
     badGuy(draw, renderer, { x: 0, y: 10 }, fire),
     badGuy(draw, renderer, { x: 100, y: 10 }, fire),
@@ -94,9 +90,16 @@ function game(draw: Draw) {
     // weapons should only show while in the canvas.
     weapons = weapons.filter((w) => draw.inFrame(w.location));
     draw.clear();
+    if (primaryPiece) {
+      if (weapons.some((w) => primaryPiece.hit(w.location))) {
+        primaryPiece = null;
+      } else {
+        primaryPiece.render();
+      }
+    }
     weapons.forEach((w) => renderer(w.weapon.layout, w.location));
     draw.drawText(point(20, 50), `FPS: ${fps}`, "20px Arial");
-    primaryPiece.render();
+
     badies.forEach((x) => weapons.forEach((w) => x.hit(w.location)));
     badies = badies.filter((x) => x.shouldRender());
     badies.forEach((b) => b.render());
