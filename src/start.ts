@@ -9,6 +9,7 @@ import { getPieceFactory } from "./pieces/pieceFactory";
 import { getFighter } from "./pieces/fighter/fighter";
 import { getWeaponsTracker } from "./weapons/weapons";
 import { loadGame } from "./gameplay/game";
+import { subscribe } from "./keyboardHandler";
 
 export const start = () => {
   const canvas: HTMLCanvasElement = utils.$("#myCanvas");
@@ -17,20 +18,30 @@ export const start = () => {
 };
 
 function startLoop(draw: Draw) {
-  const game = loadGame(draw);
-  // let weapons: FireConfiguration[] = [];
-  // const fire = (fireConfig: FireConfiguration) => {
-  //   weapons.push(fireConfig);
-  // };
-  // const renderer = createRenderer(draw);
-  // const pieceFactory = getPieceFactory(draw.dimensions, renderer, fire);
-  // const weaponTracker = getWeaponsTracker(draw.dimensions, renderer);
+  let gameMessage: string | null = null;
+  let game = loadGame(draw, gameOver, won);
+  const startGame = () => {
+    game = loadGame(draw, gameOver, won);
+    gameMessage = null;
+  };
 
-  // // Starting game piece location (bottom, center of screen)
-  // let centerBottom = point(draw.dimensions.w / 2 - 25, draw.dimensions.h - 100);
-  // let pieces = [pieceFactory(getWing(), centerBottom)];
-  // pieces.push(pieceFactory(getFighter(), { x: 400, y: 10 }));
-  // pieces.push(pieceFactory(getFighter(), { x: 300, y: 10 }));
+  function gameOver() {
+    gameMessage = "Game Over";
+    game = null;
+    setTimeout(startGame, 10000);
+  }
+  function won() {
+    gameMessage = "You WIN!!!!";
+    game = null;
+    setTimeout(startGame, 10000);
+  }
+
+  subscribe((pressType, ev) => {
+    if (ev.key === "Escape") {
+      // restart game on escape
+      startGame();
+    }
+  });
 
   // Setup for FPS readout
   let fps = 0;
@@ -47,11 +58,15 @@ function startLoop(draw: Draw) {
       currentSecond = itSec;
       frames = 0;
     }
+    if (gameMessage) {
+      draw.drawText(
+        point(draw.dimensions.w / 2, draw.dimensions.h / 2),
+        gameMessage
+      );
+    }
     draw.drawText(point(20, 50), `FPS: ${fps}`, "20px Arial");
-    game.nextTick();
-    // pieces = pieces.filter((x) => x.shouldRender());
-    // pieces.forEach((b) => b.render());
-    // // weapons
-    // weapons = weaponTracker(weapons, pieces);
+    if (game) {
+      game.nextTick();
+    }
   }, MILLISECONDS_BETWEEN_FRAMES);
 }

@@ -1,5 +1,6 @@
 import { point, Rect } from "../../drawing/dimensions";
 import { getFighter } from "../../pieces/fighter/fighter";
+import { getSnap } from "../../pieces/snap/snap";
 import { PieceFactory } from "../../pieces/types";
 import { getWing } from "../../pieces/wing/wing";
 import { Level } from "../types";
@@ -11,22 +12,22 @@ export function getLevel1(pieceFactory: PieceFactory, edges: Rect): Level {
   function wave1() {
     return [
       pieceFactory(getWing(), centerBottom),
-      pieceFactory(getFighter(), point(edges.w / 2, 0)),
+      pieceFactory(getSnap(), point(edges.w / 2, 0)),
       pieceFactory(getFighter(), point(edges.w / 2 + 60, 0)),
     ];
   }
 
   function wave2() {
     return [
-      pieceFactory(getFighter(), point(edges.w / 2, 0)),
-      pieceFactory(getFighter(), point(edges.w / 2 - 60, 0)),
-      pieceFactory(getFighter(), point(edges.w / 2 - 120, 0)),
+      pieceFactory(getSnap(), point(edges.w / 2, 0)),
+      pieceFactory(getSnap(), point(edges.w / 2 - 60, 0)),
+      //   pieceFactory(getFighter(), point(edges.w / 2 - 120, 0)),
       pieceFactory(getFighter(), point(edges.w / 2 - 180, 0)),
       pieceFactory(getFighter(), point(edges.w / 2 - 240, 0)),
       pieceFactory(getFighter(), point(edges.w / 2 + 60, 0)),
-      pieceFactory(getFighter(), point(edges.w / 2 + 120, 0)),
-      pieceFactory(getFighter(), point(edges.w / 2 + 180, 0)),
-      pieceFactory(getFighter(), point(edges.w / 2 + 240, 0)),
+      //   pieceFactory(getFighter(), point(edges.w / 2 + 120, 0)),
+      pieceFactory(getSnap(), point(edges.w / 2 + 180, 0)),
+      pieceFactory(getSnap(), point(edges.w / 2 + 240, 0)),
     ];
   }
   return {
@@ -37,44 +38,44 @@ export function getLevel1(pieceFactory: PieceFactory, edges: Rect): Level {
       },
       {
         pieces: wave2(),
-        durationInSeconds: 5,
+        durationInSeconds: 6,
       },
       {
         pieces: wave2(),
-        durationInSeconds: 5,
+        durationInSeconds: 6,
       },
       {
         pieces: wave2(),
-        durationInSeconds: 5,
+        durationInSeconds: 6,
       },
-      {
-        pieces: wave2(),
-        durationInSeconds: 5,
-      },
-      {
-        pieces: wave2(),
-        durationInSeconds: 5,
-      },
-      {
-        pieces: wave2(),
-        durationInSeconds: 5,
-      },
-      {
-        pieces: wave2(),
-        durationInSeconds: 5,
-      },
-      {
-        pieces: wave2(),
-        durationInSeconds: 5,
-      },
-      {
-        pieces: wave2(),
-        durationInSeconds: 5,
-      },
-      {
-        pieces: wave2(),
-        durationInSeconds: 5,
-      },
+      //   {
+      //     pieces: wave2(),
+      //     durationInSeconds: 6,
+      //   },
+      //   {
+      //     pieces: wave2(),
+      //     durationInSeconds: 6,
+      //   },
+      //   {
+      //     pieces: wave2(),
+      //     durationInSeconds: 6,
+      //   },
+      //   {
+      //     pieces: wave2(),
+      //     durationInSeconds: 6,
+      //   },
+      //   {
+      //     pieces: wave2(),
+      //     durationInSeconds: 6,
+      //   },
+      //   {
+      //     pieces: wave2(),
+      //     durationInSeconds: 6,
+      //   },
+      //   {
+      //     pieces: wave2(),
+      //     durationInSeconds: 6,
+      //   },
     ],
   };
 }

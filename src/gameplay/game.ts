@@ -6,7 +6,7 @@ import { FireConfiguration } from "../pieces/types";
 import { getWeaponsTracker } from "../weapons/weapons";
 import { getLevel1 } from "./levels/level1";
 
-export function loadGame(draw: Draw) {
+export function loadGame(draw: Draw, gameOver: () => void, win: () => void) {
   let currentWaveDuration = 0;
   let weapons: FireConfiguration[] = [];
   const fire = (fireConfig: FireConfiguration) => {
@@ -31,7 +31,14 @@ export function loadGame(draw: Draw) {
         wave: level.waves[currentWave.index + 1],
       };
       currentWaveDuration = 0;
+      if (!currentWave.wave) {
+        win();
+        return;
+      }
       pieces = pieces.concat(currentWave.wave.pieces);
+    }
+    if (!pieces[0].shouldRender()) {
+      gameOver();
     }
     pieces = pieces.filter((x) => x.shouldRender());
     pieces.forEach((b) => b.render());

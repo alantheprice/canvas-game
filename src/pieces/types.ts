@@ -12,7 +12,7 @@ export interface Weapon {
   speed: number;
   power: number;
   layout: LayoutData[];
-  hitLayout: LayoutData[];
+  hitLayout: (frames: number) => LayoutData[];
 }
 
 export interface FireConfiguration {

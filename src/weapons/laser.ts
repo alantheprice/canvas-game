@@ -23,13 +23,13 @@ export const LASER: Weapon = {
       2,
     ],
   ],
-  hitLayout: [
+  hitLayout: (explosionFrames: number) => [
     [
       "c",
-      { x: 4, y: 4, diameter: 7 },
+      { x: 0, y: 5, diameter: Math.floor(explosionFrames / 1.2) },
       "#FA5",
       {
-        width: 3,
+        width: 1,
         color: "#F88",
       },
     ],

@@ -1,4 +1,4 @@
-import { distancePerFrame } from "../constants";
+import { distancePerFrame, FRAMERATE } from "../constants";
 import { Point, Rect, rectFunctions } from "../drawing/dimensions";
 import { Direction } from "../drawing/direction.enum";
 import { Renderer } from "../drawing/rendering";
@@ -12,11 +12,11 @@ export function getWeaponsTracker(edges: Rect, renderer: Renderer) {
     return weapons.reduce((ww, w) => {
       if (w.hit) {
         w.hit.framesShown++;
-        if (w.hit.framesShown > 5) {
+        if (w.hit.framesShown > Math.floor(FRAMERATE / 6)) {
           return ww;
         }
         ww.push(w);
-        renderer(w.weapon.hitLayout, w.hit.location);
+        renderer(w.weapon.hitLayout(w.hit.framesShown), w.hit.location);
         return ww;
       }
       const location = {
@@ -41,7 +41,7 @@ export function getWeaponsTracker(edges: Rect, renderer: Renderer) {
         };
       }
       ww.push(w2);
-      renderer(w2.hit ? w.weapon.hitLayout : w.weapon.layout, location);
+      renderer(w2.hit ? w.weapon.hitLayout(1) : w.weapon.layout, location);
       return ww;
     }, []);
   };

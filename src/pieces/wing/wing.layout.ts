@@ -69,15 +69,6 @@ export const wingLayout: LayoutData[] = [
   ],
   [
     "c",
-    { x: wingWidth / 2, y: wingHeight / 2 + 15, diameter: 10 },
-    "#777",
-    {
-      width: 4,
-      color: "#555",
-    },
-  ],
-  [
-    "c",
     { x: wingWidth / 2, y: wingHeight / 2 + 15, diameter: 5 },
     "#45E",
     {
