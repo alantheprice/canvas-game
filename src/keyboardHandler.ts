@@ -5,6 +5,7 @@ export const KEY_MAP = {
   ArrowDown: "down",
   ArrowLeft: "left",
   ArrowRight: "right",
+  " ": "fire",
 };
 
 export type PressType = "keydown" | "keyup" | "keypress";

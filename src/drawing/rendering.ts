@@ -1,5 +1,6 @@
 import { Draw, Stroke } from "../drawing/canvasDrawing";
 import { Circle, Point, Rect } from "../drawing/dimensions";
+import { Damage } from "../pieces/types";
 
 type XY = [number, number];
 type Points = XY[];
@@ -10,6 +11,11 @@ type PathData = ["p", Points, Color, Width];
 type RectData = ["r", Rect, Color, Stroke?];
 type CircleData = ["c", Circle, Color, Stroke?];
 export type LayoutData = PathData | RectData | CircleData;
+
+export interface Layout {
+  frame: Rect;
+  layoutData: LayoutData[];
+}
 
 type RendererMap = Record<
   RenderType,

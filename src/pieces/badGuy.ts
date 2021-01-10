@@ -7,7 +7,7 @@ import {
   rect,
   rectFunctions,
 } from "../drawing/dimensions";
-import { LASER } from "../gameplay/weapons";
+import { LASER } from "../weapons/weapons";
 import { Fire, Piece, PieceFactory } from "./types";
 import { Direction } from "../game";
 import { MOVEMENT_FRAME_DISTANCE } from "../constants";

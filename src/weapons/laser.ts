@@ -3,7 +3,6 @@ import { Weapon } from "../pieces/types";
 export const LASER: Weapon = {
   speed: 900,
   power: 50,
-  //   direction: 30,
   layout: [
     [
       "p",
@@ -22,6 +21,17 @@ export const LASER: Weapon = {
       ],
       "#F00",
       2,
+    ],
+  ],
+  hitLayout: [
+    [
+      "c",
+      { x: 4, y: 4, diameter: 7 },
+      "#FA5",
+      {
+        width: 3,
+        color: "#FE9",
+      },
     ],
   ],
 };

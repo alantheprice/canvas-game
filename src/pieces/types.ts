@@ -1,29 +1,66 @@
-import { Draw } from "../drawing/canvasDrawing";
 import { Point, Rect } from "../drawing/dimensions";
-import { LayoutData, Renderer } from "../drawing/rendering";
-import { Direction } from "../game";
+import { Direction } from "../drawing/direction.enum";
+import { Layout, LayoutData, Renderer } from "../drawing/rendering";
+
+export enum PieceMovement {
+  keyboard,
+  randomLinearLeftRight,
+  scrollDown,
+}
 
 export interface Weapon {
   speed: number;
   power: number;
   layout: LayoutData[];
+  hitLayout: LayoutData[];
 }
+
+export interface FireConfiguration {
+  weapon: Weapon;
+  location: Point;
+  direction: Direction;
+  team: string;
+  hit?: {
+    location: Point;
+    framesShown: number;
+  };
+}
+
+export interface PieceConfiguration {
+  team: string;
+  health: number;
+  speed: number;
+  layout: Layout;
+  weapons: {
+    locations: Point[];
+    weapon: Weapon;
+  }[];
+  shootingPattern: "manual" | "ai";
+  movementType: PieceMovement;
+  pointingDirection: Direction;
+  stayWithinFrame: boolean;
+}
+
 export type Fire = (
   weapon: Weapon,
   location: Point,
   direction?: Direction
 ) => void;
+
 export interface Piece {
-  getLocation: () => Point;
-  setLocation: (point: Point) => void;
   render: () => void;
   shouldRender: () => boolean;
-  hit: (point: Point) => boolean;
+  hit: (point: Point, team: string) => boolean;
+}
+
+export interface Damage {
+  initialHealth: number;
+  healthRemaining: number;
 }
 
 export type PieceFactory = (
-  draw: Draw,
+  edges: Rect,
   renderer: Renderer,
   location: Point,
-  fire: Fire
-) => Piece;
+  fire: (fireConfig: FireConfiguration) => void
+) => (config: PieceConfiguration) => Piece;

@@ -5,6 +5,7 @@ export interface Point {
 
 export interface PointFunctions {
   toRect: (width: number, height: number) => Rect;
+  translate: (point: Point) => Point;
 }
 
 export interface Rect {
@@ -90,6 +91,9 @@ export function pointFunctions(p: Point): PointFunctions {
   return {
     toRect: function (width: number, height: number) {
       return rect(p.x, p.y, width, height);
+    },
+    translate: function (translation: Point) {
+      return point(translation.x + p.x, translation.y + p.y);
     },
   };
 }
