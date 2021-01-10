@@ -30,7 +30,7 @@ export const LASER: Weapon = {
       "#FA5",
       {
         width: 3,
-        color: "#FE9",
+        color: "#F88",
       },
     ],
   ],

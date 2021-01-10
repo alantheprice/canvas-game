@@ -59,8 +59,6 @@ export interface Damage {
 }
 
 export type PieceFactory = (
-  edges: Rect,
-  renderer: Renderer,
-  location: Point,
-  fire: (fireConfig: FireConfiguration) => void
-) => (config: PieceConfiguration) => Piece;
+  config: PieceConfiguration,
+  location: Point
+) => Piece;

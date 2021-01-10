@@ -1,4 +1,4 @@
-import { start } from "./game";
+import { start } from "./start";
 
 if (process.env !== "DEVELOPMENT") {
   addServiceWorker();
