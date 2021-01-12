@@ -1,9 +1,19 @@
-<!doctype html><html><head><meta charset="utf-8"/><title>Gamedev Canvas Workshop</title><style>* {
+<!doctype html><html><head><meta charset="utf-8"/><title>Canvas up scroller</title><style>* {
         padding: 0;
         margin: 0;
       }
+      #main {
+        position: relative;
+        background-color: #d4e4f4;
+        width: 100%;
+        height: 100%;
+      }
       canvas {
-        background: #eee;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
         display: block;
         margin: 0 auto;
-      }</style></head><body><div id="main"></div><canvas id="myCanvas" width="480" height="320"></canvas><script src="main.min.js"></script></body></html>
+      }</style></head><body><div id="main"><canvas id="background"></canvas><canvas id="gameplay"></canvas></div><script src="main.min.js"></script></body></html>
