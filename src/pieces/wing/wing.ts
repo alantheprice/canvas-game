@@ -22,7 +22,7 @@ export function getWing(
       },
     ],
     shootingPattern: "manual",
-    health: 10,
+    health: 5,
     movementType: PieceMovement.keyboard,
     pointingDirection: Direction.UP,
     stayWithinFrame: true,

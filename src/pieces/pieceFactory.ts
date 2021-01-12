@@ -84,9 +84,6 @@ export function getPieceFactory(
       // Renderer should also take in number of hit points,
       // vs total and add red or green dots for life left...
       renderer(config.layout.layoutData, location);
-      if (currentHealth / config.health < 1 / 5) {
-        renderer(explosion(frame, 1), location);
-      }
     }
 
     function fireLasers() {
@@ -141,18 +138,17 @@ export function getPieceFactory(
     function shouldRender() {
       return (
         currentHealth >= 0 &&
-        explosionFrames < FRAMERATE / 3 &&
+        explosionFrames < FRAMERATE &&
         rectFunctions(edges).inFrame(currentRect)
       );
     }
 
     function hit(point: Point, team: string) {
-      if (team === config.team) {
+      if (team === config.team || currentHealth <= 0) {
         // can't shoot your own team for now
         return false;
       }
       if (rectFunctions(currentRect).inFrame(point)) {
-        console.log("hit!!!");
         currentHealth = currentHealth - 1;
         return true;
       }

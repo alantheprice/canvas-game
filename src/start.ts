@@ -12,8 +12,11 @@ import { loadGame } from "./gameplay/game";
 import { subscribe } from "./keyboardHandler";
 
 export const start = () => {
-  const canvas: HTMLCanvasElement = utils.$("#myCanvas");
+  const canvas: HTMLCanvasElement = utils.$("#gameplay");
+  const background: HTMLCanvasElement = utils.$("#background");
   const draw = canvasDrawing(canvas);
+  const drawBackground = canvasDrawing(canvas);
+
   startLoop(draw);
 };
 
