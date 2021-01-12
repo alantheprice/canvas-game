@@ -1,0 +1,31 @@
+{
+  "short_name": "Flash Cards",
+  "name": "Cards",
+  "description": "note taking app",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#eee",
+  "theme_color": "#404040",
+  "start_url": "index.html",
+  "icons": [{
+      "src": "./icon/launcher-icon-1x.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "./icon/launcher-icon-2x.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "./icon/launcher-icon-4x.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./icon/launcher-icon-8x.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

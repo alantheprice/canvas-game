@@ -4,7 +4,7 @@
   "description": "game test in html",
   "main": "index.js",
   "scripts": {
-    "build": "npm run package && webpack --config webpack.config.js --production",
+    "build": "npm run package && webpack --config webpack.config.js --production && mv dist docs",
     "build:dev": "npm run package && webpack --config webpack.config.js --development",
     "dev-server": "webpack-dev-server --config webpack.config.js --open",
     "package": "/bin/bash package.sh",
