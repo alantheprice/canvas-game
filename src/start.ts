@@ -47,26 +47,31 @@ function startLoop(draw: Draw) {
   let fps = 0;
   let currentSecond = Math.floor(Date.now() / 1000);
   let frames = 0;
-  setInterval(() => {
-    draw.clear();
-    // fps counter
-    const itSec = Math.floor(Date.now() / 1000);
-    if (currentSecond === itSec) {
-      frames++;
-    } else {
-      fps = frames;
-      currentSecond = itSec;
-      frames = 0;
-    }
-    if (gameMessage) {
-      draw.drawText(
-        point(draw.dimensions.w / 2, draw.dimensions.h / 2),
-        gameMessage
-      );
-    }
-    draw.drawText(point(20, 50), `FPS: ${fps}`, "20px Arial");
-    if (game) {
-      game.nextTick();
-    }
-  }, MILLISECONDS_BETWEEN_FRAMES);
+  setInterval(
+    () =>
+      requestAnimationFrame(() => {
+        // fps counter
+        const itSec = Math.floor(Date.now() / 1000);
+        if (currentSecond === itSec) {
+          frames++;
+        } else {
+          fps = frames;
+          currentSecond = itSec;
+          frames = 0;
+        }
+        draw.clear();
+        if (gameMessage) {
+          draw.drawText(
+            point(draw.dimensions.w / 2 - 140, draw.dimensions.h / 2),
+            gameMessage,
+            "55px Arial Bold"
+          );
+        }
+        draw.drawText(point(20, 50), `FPS: ${fps}`, "20px Arial");
+        if (game) {
+          game.nextTick();
+        }
+      }),
+    MILLISECONDS_BETWEEN_FRAMES
+  );
 }

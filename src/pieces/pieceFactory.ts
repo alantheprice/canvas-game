@@ -1,4 +1,4 @@
-import { FRAMES_PER_FIRING } from "../constants";
+import { FRAMERATE, FRAMES_PER_FIRING } from "../constants";
 import { Renderer } from "../drawing/rendering";
 import {
   Point,
@@ -10,6 +10,7 @@ import {
 import { KEY_MAP, PressType, subscribe } from "../keyboardHandler";
 import { objectKeys } from "../utils";
 import { FireConfiguration, PieceConfiguration, PieceMovement } from "./types";
+import { explosion } from "./pieceExplosion.layout";
 
 export function getPieceFactory(
   edges: Rect,
@@ -19,13 +20,14 @@ export function getPieceFactory(
   return (config: PieceConfiguration, location: Point) => {
     const frame = config.layout.frame;
     let currentRect = pointFunctions(location).toRect(frame.w, frame.h);
-    let damage = config.health;
+    let currentHealth = config.health;
     if (config.movementType === PieceMovement.keyboard) {
       subscribe(handleKeys);
     }
     let shouldFire = false;
     let firingDepressed = false;
     let firingThreshold = 0;
+    let explosionFrames = 0;
 
     const currentMovements = {};
     let pieceLimits = rect(0, 0, edges.w - frame.w, edges.h - frame.h);
@@ -73,8 +75,18 @@ export function getPieceFactory(
       // render movements
       objectKeys(currentMovements).values.forEach((x) => x());
       currentRect = pointFunctions(location).toRect(frame.w, frame.h);
-      /// Renderer should also take in number of hit points, vs total and add red or green dots for life left...
+      if (currentHealth <= 0) {
+        renderer(explosion(frame, explosionFrames), location);
+        explosionFrames++;
+        return;
+      }
+
+      // Renderer should also take in number of hit points,
+      // vs total and add red or green dots for life left...
       renderer(config.layout.layoutData, location);
+      if (currentHealth / config.health < 1 / 5) {
+        renderer(explosion(frame, 1), location);
+      }
     }
 
     function fireLasers() {
@@ -127,7 +139,11 @@ export function getPieceFactory(
     }
 
     function shouldRender() {
-      return damage > 0 && rectFunctions(edges).inFrame(currentRect);
+      return (
+        currentHealth >= 0 &&
+        explosionFrames < FRAMERATE / 3 &&
+        rectFunctions(edges).inFrame(currentRect)
+      );
     }
 
     function hit(point: Point, team: string) {
@@ -137,7 +153,7 @@ export function getPieceFactory(
       }
       if (rectFunctions(currentRect).inFrame(point)) {
         console.log("hit!!!");
-        damage = damage - 1;
+        currentHealth = currentHealth - 1;
         return true;
       }
       return false;

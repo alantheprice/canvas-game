@@ -1,8 +1,10 @@
 import { FRAMERATE } from "../constants";
 import { Draw } from "../drawing/canvasDrawing";
+import { point } from "../drawing/dimensions";
 import { createRenderer } from "../drawing/rendering";
 import { getPieceFactory } from "../pieces/pieceFactory";
 import { FireConfiguration } from "../pieces/types";
+import { getWing } from "../pieces/wing/wing";
 import { getWeaponsTracker } from "../weapons/weapons";
 import { getLevel1 } from "./levels/level1";
 
@@ -15,6 +17,8 @@ export function loadGame(draw: Draw, gameOver: () => void, win: () => void) {
   const renderer = createRenderer(draw);
   const pieceFactory = getPieceFactory(draw.dimensions, renderer, fire);
   const weaponTracker = getWeaponsTracker(draw.dimensions, renderer);
+  let centerBottom = point(draw.dimensions.w / 2 - 25, draw.dimensions.h - 100);
+  let user = pieceFactory(getWing(), centerBottom);
 
   let level = getLevel1(pieceFactory, draw.dimensions);
   let currentWave = {
@@ -37,13 +41,14 @@ export function loadGame(draw: Draw, gameOver: () => void, win: () => void) {
       }
       pieces = pieces.concat(currentWave.wave.pieces);
     }
-    if (!pieces[0].shouldRender()) {
+    if (!user.shouldRender()) {
       gameOver();
     }
+    user.render();
     pieces = pieces.filter((x) => x.shouldRender());
     pieces.forEach((b) => b.render());
     // weapons
-    weapons = weaponTracker(weapons, pieces);
+    weapons = weaponTracker(weapons, pieces.concat(user));
   }
 
   return {
