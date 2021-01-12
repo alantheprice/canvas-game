@@ -36,7 +36,7 @@ export function getLevel1(pieceFactory: PieceFactory, edges: Rect): Level {
       },
       {
         pieces: snaps(),
-        durationInSeconds: 6,
+        durationInSeconds: 3,
       },
       {
         pieces: fighters(),
@@ -44,7 +44,7 @@ export function getLevel1(pieceFactory: PieceFactory, edges: Rect): Level {
       },
       {
         pieces: snaps(),
-        durationInSeconds: 6,
+        durationInSeconds: 3,
       },
       {
         pieces: fighters(),
@@ -52,7 +52,59 @@ export function getLevel1(pieceFactory: PieceFactory, edges: Rect): Level {
       },
       {
         pieces: snaps(),
-        durationInSeconds: 10,
+        durationInSeconds: 3,
+      },
+      {
+        pieces: fighters(),
+        durationInSeconds: 6,
+      },
+      {
+        pieces: snaps(),
+        durationInSeconds: 3,
+      },
+      {
+        pieces: fighters(),
+        durationInSeconds: 6,
+      },
+      {
+        pieces: snaps(),
+        durationInSeconds: 8,
+      },
+      {
+        pieces: snaps(),
+        durationInSeconds: 3,
+      },
+      {
+        pieces: fighters(),
+        durationInSeconds: 6,
+      },
+      {
+        pieces: snaps(),
+        durationInSeconds: 3,
+      },
+      {
+        pieces: fighters(),
+        durationInSeconds: 6,
+      },
+      {
+        pieces: snaps(),
+        durationInSeconds: 3,
+      },
+      {
+        pieces: fighters(),
+        durationInSeconds: 6,
+      },
+      {
+        pieces: snaps(),
+        durationInSeconds: 3,
+      },
+      {
+        pieces: fighters(),
+        durationInSeconds: 6,
+      },
+      {
+        pieces: snaps(),
+        durationInSeconds: 8,
       },
       //   {
       //     pieces: wave2(),
