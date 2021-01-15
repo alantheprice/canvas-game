@@ -56,7 +56,7 @@ export function getPieceFactory(
     function renderShooting() {
       if (config.movementType === PieceMovement.scrollDown) {
         const randomize = Math.random();
-        if (randomize > 0.995) {
+        if (randomize > 0.995 && currentHealth > 0) {
           fireLasers();
         }
       }
