@@ -17,10 +17,14 @@ export function loadGame(draw: Draw, gameActions: GameActions) {
   };
   const renderer = createRenderer(draw);
   const pieceFactory = getPieceFactory(draw.dimensions, renderer, fire);
-  const weaponTracker = getWeaponsTracker(draw.dimensions, renderer, updateScore);
+  const weaponTracker = getWeaponsTracker(
+    draw.dimensions,
+    renderer,
+    updateScore
+  );
   let centerBottom = point(draw.dimensions.w / 2 - 25, draw.dimensions.h - 100);
   let user = pieceFactory(getWing(), centerBottom);
-  let userScore = {team: user.team, hits: 0}
+  let userScore = { team: user.team, hits: 0 };
   let level = getLevel1(pieceFactory, draw.dimensions);
   let currentWave = {
     index: 0,
@@ -31,7 +35,7 @@ export function loadGame(draw: Draw, gameActions: GameActions) {
   function updateScore(team: string, score: number) {
     if (userScore.team === team) {
       userScore.hits += score;
-      gameActions.setScore(userScore.hits * 10)
+      gameActions.setScore(userScore.hits * 10);
     }
   }
 

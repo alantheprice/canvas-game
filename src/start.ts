@@ -18,16 +18,21 @@ export const start = () => {
   const draw = canvasDrawing(canvas);
   const drawBackground = canvasDrawing(background);
 
-  drawBackground.fill("#81bc5c")
+  drawBackground.fill("#81bc5c");
   drawBackground.drawRect(
-    rect(drawBackground.dimensions.w / 2 - 100, 0, 200, drawBackground.dimensions.h),
+    rect(
+      drawBackground.dimensions.w / 2 - 100,
+      0,
+      200,
+      drawBackground.dimensions.h
+    ),
     "#4d9bba"
-  )
+  );
   startLoop(draw);
 };
 
 function startLoop(draw: Draw) {
-  const gameFunctions = {gameOver, won, setScore}
+  const gameFunctions = { gameOver, won, setScore };
   let gameMessage: string | null = null;
   let game = loadGame(draw, gameFunctions);
   const startGame = () => {
@@ -46,7 +51,7 @@ function startLoop(draw: Draw) {
     setTimeout(startGame, 10000);
   }
   function setScore(score: number) {
-    $(".game-score").innerText = `Score: ${score}`
+    $(".game-score").innerText = `Score: ${score}`;
   }
 
   subscribe((pressType, ev) => {
@@ -60,6 +65,14 @@ function startLoop(draw: Draw) {
   let fps = 0;
   let currentSecond = Math.floor(Date.now() / 1000);
   let frames = 0;
+  let fpsText = null;
+
+  const logFPS = (fps: number) => {
+    if (fps !== fpsText) {
+      $(".game-fps").innerText = `fps: ${fps}`;
+      fpsText = fps;
+    }
+  };
   setInterval(
     () =>
       requestAnimationFrame(() => {
@@ -80,7 +93,7 @@ function startLoop(draw: Draw) {
             "55px Arial Bold"
           );
         }
-        draw.drawText(point(20, 50), `FPS: ${fps}`, "20px Arial");
+        logFPS(fps);
         if (game) {
           game.nextTick();
         }

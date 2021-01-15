@@ -161,3 +161,7 @@ export function assign() {
 export function error(message) {
   throw new Error(message);
 }
+
+export function arrayAtLength(length: number): any[] {
+  return new Array(length).join(",").split(",");
+}
