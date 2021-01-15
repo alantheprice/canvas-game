@@ -4,12 +4,13 @@ import { Direction } from "../drawing/direction.enum";
 import { Renderer } from "../drawing/rendering";
 import { FireConfiguration, Piece, Weapon } from "../pieces/types";
 
-export function getWeaponsTracker(edges: Rect, renderer: Renderer) {
+export function getWeaponsTracker(edges: Rect, renderer: Renderer, updateScore: (team: string, score: number) => void) {
   return (
     weapons: FireConfiguration[],
     pieces: Piece[] = []
   ): FireConfiguration[] => {
     return weapons.reduce((ww, w) => {
+      // Already hit something, show the hit explosion.
       if (w.hit) {
         w.hit.framesShown++;
         if (w.hit.framesShown > Math.floor(FRAMERATE / 6)) {
@@ -39,6 +40,7 @@ export function getWeaponsTracker(edges: Rect, renderer: Renderer) {
           framesShown: 0,
           location,
         };
+        updateScore(w.team, 1)
       }
       ww.push(w2);
       renderer(w2.hit ? w.weapon.hitLayout(1) : w.weapon.layout, location);

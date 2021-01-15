@@ -1,7 +1,7 @@
 import { Rect } from "../drawing/dimensions";
 import { LayoutData } from "../drawing/rendering";
 
-export const explosion: (frame: Rect, frames: number) => LayoutData[] = (
+export const explosion: (frame: Rect, frames: number, limit: number) => LayoutData[] = (
   frame: Rect,
   frames: number
 ) => [

@@ -1,4 +1,5 @@
 import { start } from "./start";
+import "../styles.css";
 
 if (process.env !== "DEVELOPMENT") {
   addServiceWorker();

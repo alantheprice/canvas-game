@@ -124,6 +124,10 @@ export default function canvasDrawing(canvas: HTMLCanvasElement) {
     ctx.closePath();
   }
 
+  function fill(color: string) {
+    drawRect(edges, color)
+  }
+
   function drawPath(
     points: Point[],
     lineWidth?: number,
@@ -156,6 +160,7 @@ export default function canvasDrawing(canvas: HTMLCanvasElement) {
     drawCircle: drawCircle,
     drawText: drawText,
     drawPath: drawPath,
+    fill: fill,
     clear: clear,
     context: ctx,
     canvas: canvas,

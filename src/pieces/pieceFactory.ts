@@ -11,6 +11,7 @@ import { KEY_MAP, PressType, subscribe } from "../keyboardHandler";
 import { objectKeys } from "../utils";
 import { FireConfiguration, PieceConfiguration, PieceMovement } from "./types";
 import { explosion } from "./pieceExplosion.layout";
+import { Template } from "webpack";
 
 export function getPieceFactory(
   edges: Rect,
@@ -27,7 +28,9 @@ export function getPieceFactory(
     let shouldFire = false;
     let firingDepressed = false;
     let firingThreshold = 0;
+    const explosionFramesLimit = FRAMERATE
     let explosionFrames = 0;
+    
 
     const currentMovements = {};
     let pieceLimits = rect(0, 0, edges.w - frame.w, edges.h - frame.h);
@@ -76,7 +79,7 @@ export function getPieceFactory(
       objectKeys(currentMovements).values.forEach((x) => x());
       currentRect = pointFunctions(location).toRect(frame.w, frame.h);
       if (currentHealth <= 0) {
-        renderer(explosion(frame, explosionFrames), location);
+        renderer(explosion(frame, explosionFrames, explosionFramesLimit), location);
         explosionFrames++;
         return;
       }
@@ -138,7 +141,7 @@ export function getPieceFactory(
     function shouldRender() {
       return (
         currentHealth >= 0 &&
-        explosionFrames < FRAMERATE &&
+        explosionFrames < explosionFramesLimit &&
         rectFunctions(edges).inFrame(currentRect)
       );
     }
@@ -158,6 +161,7 @@ export function getPieceFactory(
     return {
       render: render,
       shouldRender: shouldRender,
+      team: config.team,
       hit: hit,
     };
   };
