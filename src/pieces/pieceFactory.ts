@@ -34,8 +34,9 @@ export function getPieceFactory(
 
     const currentMovements = {};
     let pieceLimits = rect(0, 0, edges.w - frame.w, edges.h - frame.h);
+    let renderLimits = rect(-(frame.w + 1), -(frame.h + 1), edges.w + frame.w * 2, edges.h + frame.h * 2)
     if (!config.stayWithinFrame) {
-      pieceLimits = rect(-100, -100, edges.w + 200, edges.h + 200);
+      pieceLimits = rect(-(frame.w * 2), -(frame.h * 2), edges.w + frame.w * 4, edges.h + frame.h * 4);
     }
     const movementDirections = {
       up: () => (location.y = Math.max(location.y - config.speed, 0)),
@@ -139,10 +140,18 @@ export function getPieceFactory(
     }
 
     function shouldRender() {
+      if (currentRect.y < 0) {
+        console.log(renderLimits)
+        console.log(frame)
+        const inFrame = rectFunctions(renderLimits).inFrame(currentRect)  
+        console.log(inFrame)
+
+      }
+
       return (
         currentHealth >= 0 &&
         explosionFrames < explosionFramesLimit &&
-        rectFunctions(edges).inFrame(currentRect)
+        rectFunctions(renderLimits).inFrame(currentRect)
       );
     }
 
