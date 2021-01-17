@@ -12,6 +12,8 @@ import { objectKeys } from "../utils";
 import { FireConfiguration, PieceConfiguration, PieceMovement } from "./types";
 import { explosion } from "./pieceExplosion.layout";
 import { Template } from "webpack";
+import { Direction } from "../drawing/direction.enum";
+import { Position } from "../drawing/position.enum";
 
 export function getPieceFactory(
   edges: Rect,
@@ -90,16 +92,26 @@ export function getPieceFactory(
       currentRect = pointFunctions(location).toRect(frame.w, frame.h);
       if (currentHealth <= 0) {
         renderer(
-          explosion(frame, explosionFrames, explosionFramesLimit),
+          {
+            layoutData: explosion(frame, explosionFrames, explosionFramesLimit),
+          },
           location
         );
         explosionFrames++;
         return;
       }
 
-      // Renderer should also take in number of hit points,
-      // vs total and add red or green dots for life left...
-      renderer(config.layout.layoutData, location, true);
+      renderer(config.layout, location, {
+        showShadow: true,
+        healthDisplay: {
+          position:
+            config.pointingDirection === Direction.DOWN
+              ? Position.ABOVE
+              : Position.BELOW,
+          current: currentHealth,
+          initial: config.health,
+        },
+      });
     }
 
     function fireLasers() {
@@ -152,10 +164,6 @@ export function getPieceFactory(
     }
 
     function shouldRender() {
-      if (currentRect.y < 0) {
-        const inFrame = rectFunctions(renderLimits).inFrame(currentRect);
-      }
-
       return (
         currentHealth >= 0 &&
         explosionFrames < explosionFramesLimit &&

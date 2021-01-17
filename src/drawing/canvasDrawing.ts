@@ -2,7 +2,6 @@ import { Rect, Circle, rect, Point, rectFunctions } from "./dimensions";
 
 export interface Stroke {
   width: number;
-  ["//"];
   color: string;
 }
 
