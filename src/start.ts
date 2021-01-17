@@ -18,7 +18,9 @@ export const start = () => {
   const draw = canvasDrawing(canvas);
   const drawBackground = canvasDrawing(background);
 
+  // Grass
   drawBackground.fill("#81bc5c");
+  // river look
   drawBackground.drawRect(
     rect(
       drawBackground.dimensions.w / 2 - 100,
@@ -28,6 +30,9 @@ export const start = () => {
     ),
     "#4d9bba"
   );
+  // overlay fill to shift colors
+  drawBackground.fill("rgba(200,200,200, 0.5");
+
   startLoop(draw);
 };
 

@@ -10,7 +10,7 @@ export const LASER: Weapon = {
         [0, 0],
         [0, 10],
       ],
-      "#FA5",
+      "#5AF",
       4,
     ],
     [
@@ -19,7 +19,7 @@ export const LASER: Weapon = {
         [0, 2],
         [0, 6],
       ],
-      "#F00",
+      "#00F",
       2,
     ],
   ],

@@ -2,6 +2,7 @@ import { Rect, Circle, rect, Point, rectFunctions } from "./dimensions";
 
 export interface Stroke {
   width: number;
+  ["//"];
   color: string;
 }
 
@@ -125,7 +126,7 @@ export default function canvasDrawing(canvas: HTMLCanvasElement) {
   }
 
   function fill(color: string) {
-    drawRect(edges, color)
+    drawRect(edges, color);
   }
 
   function drawPath(
@@ -142,8 +143,8 @@ export default function canvasDrawing(canvas: HTMLCanvasElement) {
     ctx.strokeStyle = strokeColor || "#333";
     points.forEach((ps) => {
       ctx.lineTo(tr.translateX(ps.x), tr.translateY(ps.y));
-      ctx.stroke();
     });
+    ctx.stroke();
     ctx.closePath();
   }
 

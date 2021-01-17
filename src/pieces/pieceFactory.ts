@@ -28,15 +28,24 @@ export function getPieceFactory(
     let shouldFire = false;
     let firingDepressed = false;
     let firingThreshold = 0;
-    const explosionFramesLimit = FRAMERATE
+    const explosionFramesLimit = FRAMERATE / 2;
     let explosionFrames = 0;
-    
 
     const currentMovements = {};
     let pieceLimits = rect(0, 0, edges.w - frame.w, edges.h - frame.h);
-    let renderLimits = rect(-(frame.w + 1), -(frame.h + 1), edges.w + frame.w * 2, edges.h + frame.h * 2)
+    let renderLimits = rect(
+      -(frame.w + 1),
+      -(frame.h + 1),
+      edges.w + frame.w * 2,
+      edges.h + frame.h * 2
+    );
     if (!config.stayWithinFrame) {
-      pieceLimits = rect(-(frame.w * 2), -(frame.h * 2), edges.w + frame.w * 4, edges.h + frame.h * 4);
+      pieceLimits = rect(
+        -(frame.w * 2),
+        -(frame.h * 2),
+        edges.w + frame.w * 4,
+        edges.h + frame.h * 4
+      );
     }
     const movementDirections = {
       up: () => (location.y = Math.max(location.y - config.speed, 0)),
@@ -80,14 +89,17 @@ export function getPieceFactory(
       objectKeys(currentMovements).values.forEach((x) => x());
       currentRect = pointFunctions(location).toRect(frame.w, frame.h);
       if (currentHealth <= 0) {
-        renderer(explosion(frame, explosionFrames, explosionFramesLimit), location);
+        renderer(
+          explosion(frame, explosionFrames, explosionFramesLimit),
+          location
+        );
         explosionFrames++;
         return;
       }
 
       // Renderer should also take in number of hit points,
       // vs total and add red or green dots for life left...
-      renderer(config.layout.layoutData, location);
+      renderer(config.layout.layoutData, location, true);
     }
 
     function fireLasers() {
@@ -141,11 +153,7 @@ export function getPieceFactory(
 
     function shouldRender() {
       if (currentRect.y < 0) {
-        console.log(renderLimits)
-        console.log(frame)
-        const inFrame = rectFunctions(renderLimits).inFrame(currentRect)  
-        console.log(inFrame)
-
+        const inFrame = rectFunctions(renderLimits).inFrame(currentRect);
       }
 
       return (
