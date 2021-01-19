@@ -29,7 +29,7 @@ export interface FireConfiguration {
 export interface PieceConfiguration {
   team: string;
   health: number;
-  speed: number;
+  speed: () => number;
   layout: Layout;
   weapons: {
     locations: Point[];

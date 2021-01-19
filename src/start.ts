@@ -1,13 +1,7 @@
 import utils from "./utils";
 import canvasDrawing, { Draw } from "./drawing/canvasDrawing";
 import { point, rect } from "./drawing/dimensions";
-import { MILLISECONDS_BETWEEN_FRAMES } from "./constants";
-import { createRenderer } from "./drawing/rendering";
-import { FireConfiguration, Weapon } from "./pieces/types";
-import { getWing } from "./pieces/wing/wing";
-import { getPieceFactory } from "./pieces/pieceFactory";
-import { getFighter } from "./pieces/fighter/fighter";
-import { getWeaponsTracker } from "./weapons/weapons";
+import { adjustFramerateForActual, getFramerate } from "./constants";
 import { loadGame } from "./gameplay/game";
 import { subscribe } from "./keyboardHandler";
 const $ = utils.$;
@@ -20,7 +14,7 @@ export const start = () => {
 
   // Grass
   drawBackground.fill("#81bc5c");
-  // river look
+  // river look, but lame-ish
   drawBackground.drawRect(
     rect(
       drawBackground.dimensions.w / 2 - 100,
@@ -32,13 +26,13 @@ export const start = () => {
   );
   // overlay fill to shift colors
   drawBackground.fill("rgba(200,200,200, 0.5");
-
   startLoop(draw);
 };
 
 function startLoop(draw: Draw) {
-  const gameFunctions = { gameOver, won, setScore };
+  const gameFunctions = { gameOver, won, setScore, setMessage };
   let gameMessage: string | null = null;
+  let pauseDuration: number = 0;
   let game = loadGame(draw, gameFunctions);
   const startGame = () => {
     game = loadGame(draw, gameFunctions);
@@ -58,6 +52,11 @@ function startLoop(draw: Draw) {
   function setScore(score: number) {
     $(".game-score").innerText = `Score: ${score}`;
   }
+  function setMessage(message: string, durationSeconds: number) {
+    gameMessage = message;
+    pauseDuration = durationSeconds * getFramerate();
+    console.log("pause duration: ", pauseDuration);
+  }
 
   subscribe((pressType, ev) => {
     if (ev.key === "Escape") {
@@ -66,43 +65,52 @@ function startLoop(draw: Draw) {
     }
   });
 
-  // Setup for FPS readout
-  let fps = 0;
-  let currentSecond = Math.floor(Date.now() / 1000);
-  let frames = 0;
-  let fpsText = null;
-
+  const frames = [];
+  let fpsCount = 0;
   const logFPS = (fps: number) => {
-    if (fps !== fpsText) {
-      $(".game-fps").innerText = `fps: ${fps}`;
-      fpsText = fps;
+    adjustFramerateForActual(fps);
+
+    frames.push(fps);
+    const fpsDisplay = Math.floor(
+      frames.reduce((sum, next) => sum + next, 0) / frames.length
+    );
+    if (frames.length > 20) {
+      frames.splice(0, 1);
+    }
+    if (fpsCount !== fpsDisplay) {
+      $(".game-fps").innerText = `fps: ${fpsDisplay}`;
+      fpsCount = fpsDisplay;
     }
   };
-  setInterval(
-    () =>
-      requestAnimationFrame(() => {
-        // fps counter
-        const itSec = Math.floor(Date.now() / 1000);
-        if (currentSecond === itSec) {
-          frames++;
-        } else {
-          fps = frames;
-          currentSecond = itSec;
-          frames = 0;
-        }
-        draw.clear();
-        if (gameMessage) {
-          draw.drawText(
-            point(draw.dimensions.w / 2 - 140, draw.dimensions.h / 2),
-            gameMessage,
-            "55px Arial Bold"
-          );
-        }
-        logFPS(fps);
-        if (game) {
-          game.nextTick();
-        }
-      }),
-    MILLISECONDS_BETWEEN_FRAMES
-  );
+
+  let lastTimestamp = Date.now();
+
+  const nextTick = (timestamp: number) => {
+    const diff = timestamp - lastTimestamp;
+    lastTimestamp = timestamp;
+    const fps = 1000 / diff;
+    logFPS(Math.floor(fps));
+
+    draw.clear();
+    if (gameMessage) {
+      draw.drawText(
+        point(draw.dimensions.w / 2 - 140, draw.dimensions.h / 2),
+        gameMessage,
+        "55px Arial Bold"
+      );
+    }
+    requestAnimationFrame(nextTick);
+    if (!game) {
+      return;
+    }
+    if (pauseDuration > 0) {
+      pauseDuration--;
+      if (pauseDuration === 0) {
+        gameMessage = null;
+      }
+      return;
+    }
+    game.nextTick();
+  };
+  requestAnimationFrame(nextTick);
 }

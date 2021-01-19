@@ -3,7 +3,7 @@ import { LASER } from "../../weapons/laser";
 import { PieceConfiguration, PieceMovement } from "../types";
 import { Direction } from "../../drawing/direction.enum";
 import { wingHeight, wingLayout, wingWidth } from "./wing.layout";
-import { MOVEMENT_FRAME_DISTANCE } from "../../constants";
+import { getMovementFrameDistance } from "../../constants";
 
 export function getWing(
   overrides?: Partial<PieceConfiguration>
@@ -14,7 +14,7 @@ export function getWing(
       frame: rect(0, 0, wingWidth, wingHeight),
       layoutData: wingLayout,
     },
-    speed: MOVEMENT_FRAME_DISTANCE,
+    speed: getMovementFrameDistance,
     weapons: [
       {
         weapon: LASER,

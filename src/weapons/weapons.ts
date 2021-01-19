@@ -1,4 +1,4 @@
-import { distancePerFrame, FRAMERATE } from "../constants";
+import { distancePerFrame, getFramerate } from "../constants";
 import { Point, Rect, rectFunctions } from "../drawing/dimensions";
 import { Direction } from "../drawing/direction.enum";
 import { Renderer } from "../drawing/rendering";
@@ -17,7 +17,7 @@ export function getWeaponsTracker(
       // Already hit something, show the hit explosion.
       if (w.hit) {
         w.hit.framesShown++;
-        if (w.hit.framesShown > Math.floor(FRAMERATE / 6)) {
+        if (w.hit.framesShown > Math.floor(getFramerate() / 6)) {
           return ww;
         }
         ww.push(w);

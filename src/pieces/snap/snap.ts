@@ -3,7 +3,7 @@ import { LASER } from "../../weapons/laser";
 import { PieceConfiguration, PieceMovement } from "../types";
 import { Direction } from "../../drawing/direction.enum";
 import { snapHeight, snapLayout, snapWidth } from "./snap.layout";
-import { MOVEMENT_FRAME_DISTANCE } from "../../constants";
+import { getMovementFrameDistance } from "../../constants";
 
 export function getSnap(
   overrides?: Partial<PieceConfiguration>
@@ -14,7 +14,7 @@ export function getSnap(
       frame: rect(0, 0, snapWidth, snapHeight),
       layoutData: snapLayout,
     },
-    speed: MOVEMENT_FRAME_DISTANCE / 4,
+    speed: () => getMovementFrameDistance() / 4,
     weapons: [
       {
         weapon: LASER,

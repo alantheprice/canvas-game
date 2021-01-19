@@ -1,4 +1,4 @@
-import { FRAMERATE, FRAMES_PER_FIRING } from "../constants";
+import { getFramerate, getFiringThreshold } from "../constants";
 import { Renderer } from "../drawing/rendering";
 import {
   Point,
@@ -8,10 +8,9 @@ import {
   rectFunctions,
 } from "../drawing/dimensions";
 import { KEY_MAP, PressType, subscribe } from "../keyboardHandler";
-import { objectKeys } from "../utils";
+import { isFunction, objectKeys } from "../utils";
 import { FireConfiguration, PieceConfiguration, PieceMovement } from "./types";
 import { explosion } from "./pieceExplosion.layout";
-import { Template } from "webpack";
 import { Direction } from "../drawing/direction.enum";
 import { Position } from "../drawing/position.enum";
 
@@ -24,13 +23,14 @@ export function getPieceFactory(
     const frame = config.layout.frame;
     let currentRect = pointFunctions(location).toRect(frame.w, frame.h);
     let currentHealth = config.health;
+    let removeSubscription = null;
     if (config.movementType === PieceMovement.keyboard) {
-      subscribe(handleKeys);
+      removeSubscription = subscribe(handleKeys);
     }
     let shouldFire = false;
     let firingDepressed = false;
     let firingThreshold = 0;
-    const explosionFramesLimit = FRAMERATE / 2;
+    const explosionFramesLimit = getFramerate() / 2;
     let explosionFrames = 0;
 
     const currentMovements = {};
@@ -50,12 +50,12 @@ export function getPieceFactory(
       );
     }
     const movementDirections = {
-      up: () => (location.y = Math.max(location.y - config.speed, 0)),
+      up: () => (location.y = Math.max(location.y - config.speed(), 0)),
       down: () =>
-        (location.y = Math.min(location.y + config.speed, pieceLimits.h)),
-      left: () => (location.x = Math.max(location.x - config.speed, 0)),
+        (location.y = Math.min(location.y + config.speed(), pieceLimits.h)),
+      left: () => (location.x = Math.max(location.x - config.speed(), 0)),
       right: () =>
-        (location.x = Math.min(location.x + config.speed, pieceLimits.w)),
+        (location.x = Math.min(location.x + config.speed(), pieceLimits.w)),
     };
 
     if (config.movementType === PieceMovement.scrollDown) {
@@ -79,7 +79,7 @@ export function getPieceFactory(
           firingThreshold++;
         }
       }
-      if (firingThreshold > FRAMES_PER_FIRING) {
+      if (firingThreshold > getFiringThreshold()) {
         shouldFire = true;
         firingThreshold = 0;
       }
@@ -183,11 +183,18 @@ export function getPieceFactory(
       return false;
     }
 
+    function dispose() {
+      if (isFunction(removeSubscription)) {
+        removeSubscription();
+      }
+    }
+
     return {
       render: render,
       shouldRender: shouldRender,
       team: config.team,
       hit: hit,
+      dispose: dispose,
     };
   };
 }

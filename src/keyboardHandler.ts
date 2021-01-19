@@ -32,6 +32,10 @@ function setup() {
 
 export function subscribe(handler: KeyHandler) {
   handlers.push(handler);
+  return () => {
+    const handleIndex = handlers.indexOf(handler);
+    handlers.splice(handleIndex, 1);
+  };
 }
 
 setup();
