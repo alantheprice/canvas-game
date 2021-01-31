@@ -46,6 +46,7 @@ export function loadGame(
   nextLevel();
 
   function nextLevel() {
+    environment.nextTick();
     levelIndex++;
     level = levels[levelIndex];
     if (level) {
@@ -85,7 +86,6 @@ export function loadGame(
     if (!user.shouldRender()) {
       gameActions.gameOver();
     }
-    environment.nextTick();
     draw.clear();
     user.render();
     pieces = pieces.filter((x) => x.shouldRender());
