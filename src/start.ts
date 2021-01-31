@@ -11,42 +11,36 @@ export const start = () => {
   const background: HTMLCanvasElement = utils.$("#background");
   const draw = canvasDrawing(canvas);
   const drawBackground = canvasDrawing(background);
-
-  // Grass
-  drawBackground.fill("#81bc5c");
-  // river look, but lame-ish
-  drawBackground.drawRect(
-    rect(
-      drawBackground.dimensions.w / 2 - 100,
-      0,
-      200,
-      drawBackground.dimensions.h
-    ),
-    "#4d9bba"
-  );
-  // overlay fill to shift colors
-  drawBackground.fill("rgba(200,200,200, 0.5");
-  startLoop(draw);
+  startLoop(draw, drawBackground);
 };
 
-function startLoop(draw: Draw) {
+function startLoop(draw: Draw, drawBackground: Draw) {
   const gameFunctions = { gameOver, won, setScore, setMessage };
   let gameMessage: string | null = null;
   let pauseDuration: number = 0;
-  let game = loadGame(draw, gameFunctions);
+  let game = loadGame(draw, drawBackground, gameFunctions);
+
   const startGame = () => {
-    game = loadGame(draw, gameFunctions);
+    game = loadGame(draw, drawBackground, gameFunctions);
     gameMessage = null;
+  };
+
+  const disposeGame = () => {
+    if (!game) {
+      return;
+    }
+    game.dispose();
+    game = null;
   };
 
   function gameOver() {
     gameMessage = "Game Over";
-    game = null;
+    disposeGame();
     setTimeout(startGame, 10000);
   }
   function won() {
     gameMessage = "You WIN!!!!";
-    game = null;
+    disposeGame();
     setTimeout(startGame, 10000);
   }
   function setScore(score: number) {
@@ -65,34 +59,26 @@ function startLoop(draw: Draw) {
     }
   });
 
-  const frames = [];
-  let fpsCount = 0;
+  let lastUpdated = Date.now();
   const logFPS = (fps: number) => {
     adjustFramerateForActual(fps);
-
-    frames.push(fps);
-    const fpsDisplay = Math.floor(
-      frames.reduce((sum, next) => sum + next, 0) / frames.length
-    );
-    if (frames.length > 20) {
-      frames.splice(0, 1);
-    }
-    if (fpsCount !== fpsDisplay) {
-      $(".game-fps").innerText = `fps: ${fpsDisplay}`;
-      fpsCount = fpsDisplay;
+    if (Date.now() - 3000 > lastUpdated) {
+      lastUpdated = Date.now();
+      $(".game-fps").innerText = `fps: ${fps}`;
     }
   };
 
   let lastTimestamp = Date.now();
-
+  let perf = [];
+  // Game Loop.
   const nextTick = (timestamp: number) => {
     const diff = timestamp - lastTimestamp;
     lastTimestamp = timestamp;
     const fps = 1000 / diff;
     logFPS(Math.floor(fps));
 
-    draw.clear();
     if (gameMessage) {
+      draw.clear();
       draw.drawText(
         point(draw.dimensions.w / 2 - 140, draw.dimensions.h / 2),
         gameMessage,
@@ -110,7 +96,20 @@ function startLoop(draw: Draw) {
       }
       return;
     }
+    const start = performance.now();
     game.nextTick();
+    // checking for perf stuff
+    const end = performance.now();
+    perf.push(end - start);
+    if (perf.length > 1000) {
+      console.log(
+        "aveTickDuration",
+        perf.reduce((avg, next, index, arr) => {
+          return avg + next / arr.length;
+        }, 0)
+      );
+      perf = [];
+    }
   };
   requestAnimationFrame(nextTick);
 }

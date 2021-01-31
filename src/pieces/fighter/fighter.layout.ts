@@ -23,7 +23,7 @@ export const fighterLayout: LayoutData[] = [
       [fighterWidth, fighterHeight],
     ],
     "#755",
-    5,
+    7,
   ],
   [
     "p",
@@ -32,6 +32,6 @@ export const fighterLayout: LayoutData[] = [
       [0, fighterHeight],
     ],
     "#755",
-    5,
+    7,
   ],
 ];

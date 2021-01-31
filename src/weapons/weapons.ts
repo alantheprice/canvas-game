@@ -50,10 +50,22 @@ export function getWeaponsTracker(
         updateScore(w.team, 1);
       }
       ww.push(w2);
-      renderer(
-        { layoutData: w2.hit ? w.weapon.hitLayout(1) : w.weapon.layout },
-        location
-      );
+      if (w2.hit) {
+        renderer(
+          {
+            layoutData: w2.hit ? w.weapon.hitLayout(1) : w.weapon.layout,
+          },
+          location
+        );
+      } else {
+        renderer(
+          w.weapon.preRendered || {
+            layoutData: w.weapon.layout,
+          },
+          location
+        );
+      }
+
       return ww;
     }, []);
   };

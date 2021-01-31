@@ -4,16 +4,21 @@ import { PieceConfiguration, PieceMovement } from "../types";
 import { Direction } from "../../drawing/direction.enum";
 import { fighterHeight, fighterLayout, fighterWidth } from "./fighter.layout";
 import { getMovementFrameDistance } from "../../constants";
+import preRender from "../../drawing/preRender";
+
+const layout = {
+  frame: rect(0, 0, fighterWidth, fighterHeight),
+  layoutData: fighterLayout,
+};
+let preRendered: HTMLImageElement = preRender(layout);
 
 export function getFighter(
   overrides?: Partial<PieceConfiguration>
 ): PieceConfiguration {
   return {
     team: "red",
-    layout: {
-      frame: rect(0, 0, fighterWidth, fighterHeight),
-      layoutData: fighterLayout,
-    },
+    layout: layout,
+    preRendered: preRendered,
     speed: () => getMovementFrameDistance() / 4,
     weapons: [
       {

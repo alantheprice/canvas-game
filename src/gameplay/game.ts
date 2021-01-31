@@ -1,7 +1,9 @@
 import { getFramerate } from "../constants";
 import { Draw } from "../drawing/canvasDrawing";
-import { point } from "../drawing/dimensions";
+import { point, rect } from "../drawing/dimensions";
 import { createRenderer } from "../drawing/rendering";
+import { getEnvironment } from "../environment/riverEnvironment";
+import { treeLayout } from "../environment/trees/pine.layout";
 import { GameActions } from "../interfaces";
 import { getPieceFactory } from "../pieces/pieceFactory";
 import { FireConfiguration } from "../pieces/types";
@@ -10,13 +12,18 @@ import { getWeaponsTracker } from "../weapons/weapons";
 import { getLevel1 } from "./levels/level1";
 import { getLevel2 } from "./levels/level2";
 
-export function loadGame(draw: Draw, gameActions: GameActions) {
+export function loadGame(
+  draw: Draw,
+  backgroundDraw: Draw,
+  gameActions: GameActions
+) {
   let currentWaveDuration = 0;
   let weapons: FireConfiguration[] = [];
   const fire = (fireConfig: FireConfiguration) => {
     weapons.push(fireConfig);
   };
   const renderer = createRenderer(draw);
+  const backgroundRenderer = createRenderer(backgroundDraw);
   const pieceFactory = getPieceFactory(draw.dimensions, renderer, fire);
   const weaponTracker = getWeaponsTracker(
     draw.dimensions,
@@ -28,8 +35,10 @@ export function loadGame(draw: Draw, gameActions: GameActions) {
   let userScore = { team: user.team, hits: 0 };
   const levels = [
     getLevel1(pieceFactory, draw.dimensions),
-    getLevel2(pieceFactory, draw.dimensions),
+    getLevel1(pieceFactory, draw.dimensions),
+    getLevel1(pieceFactory, draw.dimensions),
   ];
+  let environment = getEnvironment(backgroundDraw, backgroundRenderer);
   let levelIndex = -1;
   let level = null;
   let currentWave = null;
@@ -76,6 +85,8 @@ export function loadGame(draw: Draw, gameActions: GameActions) {
     if (!user.shouldRender()) {
       gameActions.gameOver();
     }
+    environment.nextTick();
+    draw.clear();
     user.render();
     pieces = pieces.filter((x) => x.shouldRender());
     pieces.forEach((b) => b.render());
@@ -85,6 +96,7 @@ export function loadGame(draw: Draw, gameActions: GameActions) {
 
   function dispose() {
     user.dispose();
+    pieces = [];
   }
 
   return {

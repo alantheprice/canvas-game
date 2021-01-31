@@ -1,28 +1,38 @@
+import { rect } from "../drawing/dimensions";
+import preRender from "../drawing/preRender";
 import { Weapon } from "../pieces/types";
+
+const layoutData = [
+  [
+    "p",
+    [
+      [0, 0],
+      [0, 10],
+    ],
+    "#5AF",
+    6,
+  ],
+  [
+    "p",
+    [
+      [0, 2],
+      [0, 6],
+    ],
+    "#00F",
+    3,
+  ],
+];
+
+const preRendered = preRender({
+  layoutData: layoutData,
+  frame: rect(0, 0, 20, 30),
+});
 
 export const LASER: Weapon = {
   speed: 900,
   power: 50,
-  layout: [
-    [
-      "p",
-      [
-        [0, 0],
-        [0, 10],
-      ],
-      "#5AF",
-      4,
-    ],
-    [
-      "p",
-      [
-        [0, 2],
-        [0, 6],
-      ],
-      "#00F",
-      2,
-    ],
-  ],
+  layout: layoutData,
+  preRendered: preRendered,
   hitLayout: (explosionFrames: number) => [
     [
       "c",

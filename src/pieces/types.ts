@@ -12,6 +12,7 @@ export interface Weapon {
   speed: number;
   power: number;
   layout: LayoutData[];
+  preRendered?: HTMLImageElement;
   hitLayout: (frames: number) => LayoutData[];
 }
 
@@ -30,6 +31,7 @@ export interface PieceConfiguration {
   team: string;
   health: number;
   speed: () => number;
+  preRendered?: HTMLImageElement;
   layout: Layout;
   weapons: {
     locations: Point[];

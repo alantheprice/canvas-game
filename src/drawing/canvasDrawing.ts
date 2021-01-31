@@ -28,13 +28,16 @@ export interface Draw {
     points: Point[],
     lineWidth?: number,
     strokeColor?: string,
-    translation?: Point
+    translationPoint?: Point
   ) => void;
+  drawImage: (image: HTMLImageElement, translationPoint?: Point) => void;
   clear: () => void;
   inFrame: (point: Point) => boolean;
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   dimensions: Rect;
+  fill: (color: string) => void;
+  toDataUrl: () => string;
 }
 
 /**
@@ -43,10 +46,13 @@ export interface Draw {
  * @param {HTMLCanvasElement} canvas
  * @returns
  */
-export default function canvasDrawing(canvas: HTMLCanvasElement) {
+export default function canvasDrawing(
+  canvas: HTMLCanvasElement,
+  dimensions?: Rect
+) {
+  const canvasHeight = dimensions ? dimensions.h : window.innerHeight;
+  const canvasWidth = dimensions ? dimensions.w : window.innerWidth;
   const ratio = window.devicePixelRatio;
-  const canvasHeight = window.innerHeight;
-  const canvasWidth = window.innerWidth;
 
   // fill screen with canvas
   canvas.width = canvasWidth * ratio;
@@ -147,6 +153,19 @@ export default function canvasDrawing(canvas: HTMLCanvasElement) {
     ctx.closePath();
   }
 
+  function drawImage(image: HTMLImageElement, translationPoint?: Point) {
+    const tr = translation(translationPoint);
+    const frame = rect(0, 0, image.naturalWidth, image.naturalHeight);
+    const scaledFrame = rectFunctions(frame).scale(1 / ratio);
+    ctx.drawImage(
+      image,
+      tr.translateX(0),
+      tr.translateY(0),
+      scaledFrame.w,
+      scaledFrame.h
+    );
+  }
+
   function clear() {
     ctx.clearRect(edges.x, edges.y, edges.w, edges.h);
   }
@@ -155,16 +174,22 @@ export default function canvasDrawing(canvas: HTMLCanvasElement) {
     return rectFunctions(edges).inFrame(point);
   }
 
+  function toDataUrl() {
+    return canvas.toDataURL("image/png");
+  }
+
   return {
     drawRect: drawRect,
     drawCircle: drawCircle,
     drawText: drawText,
     drawPath: drawPath,
+    drawImage: drawImage,
     fill: fill,
     clear: clear,
     context: ctx,
     canvas: canvas,
     inFrame: inFrame,
     dimensions: edges,
-  };
+    toDataUrl: toDataUrl,
+  } as Draw;
 }

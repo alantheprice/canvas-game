@@ -37,7 +37,7 @@ type RendererMap = Record<
 >;
 
 export type Renderer = (
-  layout: Layout,
+  layout: Layout | HTMLImageElement,
   currentLocation: Point,
   config?: RenderingConfiguration
 ) => void;
@@ -83,6 +83,10 @@ export function createRenderer(draw: Draw): Renderer {
       colorOverride ? null : circleData[3] || null,
       location
     );
+  };
+
+  const renderImage = (image: HTMLImageElement, location: Point) => {
+    draw.drawImage(image, location);
   };
 
   const layoutRenderer: RendererMap = {
@@ -143,10 +147,14 @@ export function createRenderer(draw: Draw): Renderer {
   }
 
   function render(
-    layout: Layout,
+    layout: Layout | HTMLImageElement,
     currentLocation: Point,
     config?: RenderingConfiguration
   ) {
+    if (layout instanceof HTMLImageElement) {
+      renderImage(layout, currentLocation);
+      return;
+    }
     if (config && config.showShadow) {
       renderLayout(
         layout.layoutData,

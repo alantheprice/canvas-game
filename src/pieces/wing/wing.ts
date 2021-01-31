@@ -4,16 +4,22 @@ import { PieceConfiguration, PieceMovement } from "../types";
 import { Direction } from "../../drawing/direction.enum";
 import { wingHeight, wingLayout, wingWidth } from "./wing.layout";
 import { getMovementFrameDistance } from "../../constants";
+import preRender from "../../drawing/preRender";
+
+const layout = {
+  frame: rect(0, 0, wingWidth, wingHeight),
+  layoutData: wingLayout,
+};
+
+let preRendered: HTMLImageElement = preRender(layout);
 
 export function getWing(
   overrides?: Partial<PieceConfiguration>
 ): PieceConfiguration {
   return {
     team: "blue",
-    layout: {
-      frame: rect(0, 0, wingWidth, wingHeight),
-      layoutData: wingLayout,
-    },
+    layout,
+    preRendered: preRendered,
     speed: getMovementFrameDistance,
     weapons: [
       {

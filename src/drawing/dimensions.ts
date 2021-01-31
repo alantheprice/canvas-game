@@ -21,6 +21,7 @@ export interface RectFunctions {
   getPoint: () => Point;
   setPoint: (point: Point) => void;
   inFrame: (point: Point) => boolean;
+  scale: (scaleFactor: number) => Rect;
 }
 
 export interface Circle {
@@ -76,6 +77,9 @@ export function rectFunctions(rectangle: Rect) {
         point.y <= r.y + r.h &&
         point.x <= r.x + r.w
       );
+    },
+    scale: function (scaleFactor: number): Rect {
+      return rect(r.x, r.y, r.w * scaleFactor, r.h * scaleFactor);
     },
   };
 }

@@ -100,17 +100,16 @@ export function getPieceFactory(
         explosionFrames++;
         return;
       }
-
-      renderer(config.layout, location, {
+      renderer(config.preRendered || config.layout, location, {
         showShadow: true,
-        healthDisplay: {
-          position:
-            config.pointingDirection === Direction.DOWN
-              ? Position.ABOVE
-              : Position.BELOW,
-          current: currentHealth,
-          initial: config.health,
-        },
+        // healthDisplay: {
+        //   position:
+        //     config.pointingDirection === Direction.DOWN
+        //       ? Position.ABOVE
+        //       : Position.BELOW,
+        //   current: currentHealth,
+        //   initial: config.health,
+        // },
       });
     }
 
