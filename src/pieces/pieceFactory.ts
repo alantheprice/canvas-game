@@ -93,23 +93,29 @@ export function getPieceFactory(
       if (currentHealth <= 0) {
         renderer(
           {
-            layoutData: explosion(frame, explosionFrames, explosionFramesLimit),
+            layout: {
+              layoutData: explosion(
+                frame,
+                explosionFrames,
+                explosionFramesLimit
+              ),
+            },
           },
           location
         );
         explosionFrames++;
         return;
       }
-      renderer(config.preRendered || config.layout, location, {
+      renderer(config, location, {
         showShadow: true,
-        // healthDisplay: {
-        //   position:
-        //     config.pointingDirection === Direction.DOWN
-        //       ? Position.ABOVE
-        //       : Position.BELOW,
-        //   current: currentHealth,
-        //   initial: config.health,
-        // },
+        healthDisplay: {
+          position:
+            config.pointingDirection === Direction.DOWN
+              ? Position.ABOVE
+              : Position.BELOW,
+          current: currentHealth,
+          initial: config.health,
+        },
       });
     }
 

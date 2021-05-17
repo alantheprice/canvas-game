@@ -1,6 +1,7 @@
 import { PIECE_SHADOW_OFFSET } from "../constants";
 import { Draw, Stroke } from "../drawing/canvasDrawing";
 import { Circle, point, Point, rect, Rect } from "../drawing/dimensions";
+import { LayoutConfiguration, PieceConfiguration } from "../pieces/types";
 import { arrayAtLength } from "../utils";
 import { Direction } from "./direction.enum";
 import { Position } from "./position.enum";
@@ -37,7 +38,7 @@ type RendererMap = Record<
 >;
 
 export type Renderer = (
-  layout: Layout | HTMLImageElement,
+  layoutConfiguration: LayoutConfiguration,
   currentLocation: Point,
   config?: RenderingConfiguration
 ) => void;
@@ -147,25 +148,34 @@ export function createRenderer(draw: Draw): Renderer {
   }
 
   function render(
-    layout: Layout | HTMLImageElement,
+    layoutConfiguration: LayoutConfiguration,
     currentLocation: Point,
     config?: RenderingConfiguration
   ) {
-    if (layout instanceof HTMLImageElement) {
-      renderImage(layout, currentLocation);
+    const setHealth = () => {
+      if (config && config.healthDisplay) {
+        renderHealthDisplay(
+          config.healthDisplay,
+          currentLocation,
+          layoutConfiguration.layout.frame
+        );
+      }
+    };
+
+    if (layoutConfiguration.preRendered instanceof HTMLImageElement) {
+      renderImage(layoutConfiguration.preRendered, currentLocation);
+      setHealth();
       return;
     }
     if (config && config.showShadow) {
       renderLayout(
-        layout.layoutData,
+        layoutConfiguration.layout.layoutData,
         point(currentLocation.x, currentLocation.y + PIECE_SHADOW_OFFSET),
         "rgba(80, 80, 80, 0.1)"
       );
     }
-    renderLayout(layout.layoutData, currentLocation);
-    if (config && config.healthDisplay && layout.frame) {
-      renderHealthDisplay(config.healthDisplay, currentLocation, layout.frame);
-    }
+    renderLayout(layoutConfiguration.layout.layoutData, currentLocation);
+    setHealth();
   }
 
   return render;

@@ -27,12 +27,15 @@ export interface FireConfiguration {
   };
 }
 
-export interface PieceConfiguration {
+export interface LayoutConfiguration {
+  preRendered?: HTMLImageElement;
+  layout: Layout;
+}
+
+export interface PieceConfiguration extends LayoutConfiguration {
   team: string;
   health: number;
   speed: () => number;
-  preRendered?: HTMLImageElement;
-  layout: Layout;
   weapons: {
     locations: Point[];
     weapon: Weapon;

@@ -3,6 +3,8 @@ import { point, rect } from "../drawing/dimensions";
 import { Renderer } from "../drawing/rendering";
 import { pineTreeLayout } from "./trees/pine.layout";
 
+const showTrees = false;
+
 export function getEnvironment(
   backgroundDraw: Draw,
   backgroundRenderer: Renderer
@@ -28,24 +30,25 @@ export function getEnvironment(
       riverWidth,
       "#4d9bba"
     );
+    if (showTrees) {
+      backgroundRenderer(
+        { layout: { layoutData: pineTreeLayout } },
+        point(area.w / 2 - riverWidth / 2, drawLocation - 60)
+      );
+      backgroundRenderer(
+        { layout: { layoutData: pineTreeLayout } },
+        point(area.w / 2 + 150, drawLocation - 90)
+      );
 
-    // backgroundRenderer(
-    //   { layoutData: pineTreeLayout },
-    //   point(area.w / 2 - riverWidth / 2, drawLocation - 60)
-    // );
-    // backgroundRenderer(
-    //   { layoutData: pineTreeLayout },
-    //   point(area.w / 2 + 150, drawLocation - 90)
-    // );
-
-    // backgroundRenderer(
-    //   { layoutData: pineTreeLayout },
-    //   point(area.w / 2 - 200, drawLocation)
-    // );
-    // backgroundRenderer(
-    //   { layoutData: pineTreeLayout },
-    //   point(area.w / 2 + 150, drawLocation)
-    // );
+      backgroundRenderer(
+        { layout: { layoutData: pineTreeLayout } },
+        point(area.w / 2 - 200, drawLocation)
+      );
+      backgroundRenderer(
+        { layout: { layoutData: pineTreeLayout } },
+        point(area.w / 2 + 150, drawLocation)
+      );
+    }
 
     if (drawLocation > area.h) {
       drawLocation = 0;

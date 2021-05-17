@@ -13,7 +13,7 @@ const preRender = (layout: Layout) => {
   };
   const draw = canvasDrawing(scratch, frame);
   const renderer = createRenderer(draw);
-  renderer(layout, point(0, 0), { showShadow: true });
+  renderer({ layout }, point(0, 0), { showShadow: true });
   const dataUrl = draw.toDataUrl();
   draw.clear();
   const img = new Image();

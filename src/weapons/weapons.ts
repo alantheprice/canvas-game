@@ -22,7 +22,7 @@ export function getWeaponsTracker(
         }
         ww.push(w);
         renderer(
-          { layoutData: w.weapon.hitLayout(w.hit.framesShown) },
+          { layout: { layoutData: w.weapon.hitLayout(w.hit.framesShown) } },
           w.hit.location
         );
         return ww;
@@ -53,14 +53,19 @@ export function getWeaponsTracker(
       if (w2.hit) {
         renderer(
           {
-            layoutData: w2.hit ? w.weapon.hitLayout(1) : w.weapon.layout,
+            layout: {
+              layoutData: w2.hit ? w.weapon.hitLayout(1) : w.weapon.layout,
+            },
           },
           location
         );
       } else {
         renderer(
-          w.weapon.preRendered || {
-            layoutData: w.weapon.layout,
+          {
+            preRendered: w.weapon.preRendered,
+            layout: {
+              layoutData: w.weapon.layout,
+            },
           },
           location
         );
