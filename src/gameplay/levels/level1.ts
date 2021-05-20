@@ -27,18 +27,21 @@ export function getLevel1(pieceFactory: PieceFactory, edges: Rect): Level {
   }
 
   function snaps() {
+    const fifths = edges.w / 5;
     return [
-      pieceFactory(snap, point(edges.w / 2, -snapHeight)),
-      pieceFactory(snap, point(edges.w / 2 - 60, -snapHeight)),
-      pieceFactory(snap, point(edges.w / 2 + 60, -snapHeight)),
+      pieceFactory(snap, point(fifths, -snapHeight)),
+      pieceFactory(snap, point(fifths * 2, -snapHeight)),
+      pieceFactory(snap, point(fifths * 3, -snapHeight)),
+      pieceFactory(snap, point(fifths * 4, -snapHeight)),
     ];
   }
 
   function fighters() {
+    const quarters = edges.w / 4;
     return [
-      pieceFactory(fighter, point(edges.w / 2, -fighterHeight)),
-      pieceFactory(fighter, point(edges.w / 2 - 120, -fighterHeight)),
-      pieceFactory(fighter, point(edges.w / 2 + 120, -fighterHeight)),
+      pieceFactory(fighter, point(quarters, -fighterHeight)),
+      pieceFactory(fighter, point(quarters * 2, -fighterHeight)),
+      pieceFactory(fighter, point(quarters * 3, -fighterHeight)),
     ];
   }
 
