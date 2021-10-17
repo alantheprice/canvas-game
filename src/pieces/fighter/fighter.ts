@@ -19,7 +19,7 @@ export function getFighter(
     team: "red",
     layout: layout,
     preRendered: preRendered,
-    speed: () => getMovementFrameDistance() / 4,
+    speed: () => getMovementFrameDistance() / 5,
     weapons: [
       {
         weapon: LASER,

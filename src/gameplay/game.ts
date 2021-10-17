@@ -3,7 +3,6 @@ import { Draw } from "../drawing/canvasDrawing";
 import { point, rect } from "../drawing/dimensions";
 import { createRenderer } from "../drawing/rendering";
 import { getEnvironment } from "../environment/riverEnvironment";
-import { treeLayout } from "../environment/trees/pine.layout";
 import { GameActions } from "../interfaces";
 import { getPieceFactory } from "../pieces/pieceFactory";
 import { FireConfiguration } from "../pieces/types";
@@ -51,7 +50,7 @@ export function loadGame(
     level = levels[levelIndex];
     if (level) {
       // levels should be communicated without zero based index.
-      gameActions.setMessage(`Level ${levelIndex + 1}`, 5);
+      gameActions.setMessage(`Level ${levelIndex + 1}`, 2);
       currentWave = {
         index: 0,
         wave: level.waves[0],

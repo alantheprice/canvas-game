@@ -2,31 +2,35 @@ import { point, rect } from "../../drawing/dimensions";
 import { LASER } from "../../weapons/laser";
 import { PieceConfiguration, PieceMovement } from "../types";
 import { Direction } from "../../drawing/direction.enum";
-import { snapHeight, snapLayout, snapWidth } from "./snap.layout";
+import { bossHeight, bossLayout, bossWidth } from "./boss.layout";
 import { getMovementFrameDistance } from "../../constants";
 import preRender from "../../drawing/preRender";
 
 const layout = {
-  frame: rect(0, 0, snapWidth, snapHeight),
-  layoutData: snapLayout,
+  frame: rect(0, 0, bossWidth, bossHeight),
+  layoutData: bossLayout,
 };
 let preRendered: HTMLImageElement = preRender(layout);
 
-export function getSnap(
+export function getBoss(
   overrides?: Partial<PieceConfiguration>
 ): PieceConfiguration {
   return {
     team: "red",
     layout: layout,
     preRendered: preRendered,
-    speed: () => getMovementFrameDistance() / 3,
+    speed: () => getMovementFrameDistance() / 9,
     weapons: [
       {
         weapon: LASER,
-        locations: [point(snapWidth / 2, 20)],
+        locations: [
+          point(7, 3),
+          point(bossWidth - 7, 0),
+          point(bossWidth / 2, 0),
+        ],
       },
     ],
-    health: 1,
+    health: 80,
     shootingPattern: "ai",
     movementType: PieceMovement.scrollDown,
     pointingDirection: Direction.DOWN,

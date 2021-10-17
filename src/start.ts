@@ -18,6 +18,7 @@ function startLoop(draw: Draw, drawBackground: Draw) {
   const gameFunctions = { gameOver, won, setScore, setMessage };
   let gameMessage: string | null = null;
   let pauseDuration: number = 0;
+  let paused = false;
   let game = loadGame(draw, drawBackground, gameFunctions);
 
   const startGame = () => {
@@ -33,10 +34,14 @@ function startLoop(draw: Draw, drawBackground: Draw) {
     game = null;
   };
 
+  function pauseGame() {
+    paused = !paused;
+  }
+
   function gameOver() {
     gameMessage = "Game Over";
     disposeGame();
-    setTimeout(startGame, 10000);
+    setTimeout(startGame, 8000);
   }
   function won() {
     gameMessage = "You WIN!!!!";
@@ -57,43 +62,46 @@ function startLoop(draw: Draw, drawBackground: Draw) {
       // restart game on escape
       startGame();
     }
+    if (ev.key === "p") {
+      pauseGame();
+    }
   });
 
   let lastUpdated = Date.now();
-  const logFPS = (fps: number) => {
+  let lastTimestamp = Date.now();
+  let perf = [];
+  const logRunLoop = (timestamp: number) => {
+    const diff = timestamp - lastTimestamp;
+    lastTimestamp = timestamp;
+    const fps = Math.floor(1000 / diff)
     adjustFramerateForActual(fps);
     if (Date.now() - 3000 > lastUpdated) {
       lastUpdated = Date.now();
       $(".game-fps").innerText = `fps: ${fps}`;
-    }
+    };
   };
 
-  let lastTimestamp = Date.now();
-  let perf = [];
   // Game Loop.
   const nextTick = (timestamp: number) => {
-    const diff = timestamp - lastTimestamp;
-    lastTimestamp = timestamp;
-    const fps = 1000 / diff;
-    logFPS(Math.floor(fps));
+    logRunLoop(timestamp);
 
-    if (gameMessage) {
+    if (gameMessage || paused) {
       draw.clear();
       draw.drawText(
         point(draw.dimensions.w / 2 - 140, draw.dimensions.h / 2),
-        gameMessage,
+        gameMessage || "PAUSED, press 'p' to unpause",
         "55px Arial Bold"
       );
     }
     requestAnimationFrame(nextTick);
-    if (!game) {
-      return;
-    }
     if (pauseDuration > 0) {
       pauseDuration--;
       if (pauseDuration === 0) {
         gameMessage = null;
       }
+      return;
+    }
+    if (!game || paused) {
       return;
     }
     const start = performance.now();
