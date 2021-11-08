@@ -30,7 +30,7 @@ export function getBoss(
         ],
       },
     ],
-    health: 80,
+    health: 120,
     shootingPattern: "ai",
     movementType: PieceMovement.scrollDown,
     pointingDirection: Direction.DOWN,

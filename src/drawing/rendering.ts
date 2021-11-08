@@ -3,6 +3,7 @@ import { Draw, Stroke } from "../drawing/canvasDrawing";
 import { Circle, point, Point, rect, Rect } from "../drawing/dimensions";
 import { LayoutConfiguration, PieceConfiguration } from "../pieces/types";
 import { arrayAtLength } from "../utils";
+import colors from "./colors";
 import { Direction } from "./direction.enum";
 import { Position } from "./position.enum";
 
@@ -102,7 +103,7 @@ export function createRenderer(draw: Draw): Renderer {
     pieceFrame: Rect
   ) {
     const padding = 4;
-    const height = 15;
+    const height = 6;
     const paddedHeight = height + padding;
     // Render Health display here.
     let topLeft = point(
@@ -113,21 +114,33 @@ export function createRenderer(draw: Draw): Renderer {
     );
 
     const layoutData: LayoutData[] = arrayAtLength(
-      healthDisplay.initial / 2
+      healthDisplay.initial / 10
     ).map((_, index) => {
       const health = healthDisplay.current - (index + 1) * 2;
-      const fill = health > 1 ? "#2E7D32" : "transparent";
+      const fill = health > 1 ? colors.green : colors.transparent;
       return [
         "c",
         { x: index * 15, y: 0, diameter: 5 },
         fill,
         {
-          width: 3,
-          color: health >= 0 ? "#2E7D32" : "#c62828",
+          width: 2,
+          color: health >= 0 ? colors.green : colors.red,
         },
       ];
     });
-    renderLayout(layoutData, topLeft);
+    const currentHealthWidth = Math.floor(
+      pieceFrame.w * (healthDisplay.current / healthDisplay.initial)
+    );
+    const healthData: LayoutData[] = [
+      [
+        "r",
+        { x: 0, y: 0, w: pieceFrame.w, h: height },
+        colors.transparent,
+        { width: 1, color: colors.green },
+      ],
+      ["r", { x: 0, y: 0, w: currentHealthWidth, h: height }, colors.green],
+    ];
+    renderLayout(healthData, topLeft);
   }
 
   function renderLayout(

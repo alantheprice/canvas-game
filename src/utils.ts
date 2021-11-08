@@ -163,5 +163,5 @@ export function error(message) {
 }
 
 export function arrayAtLength(length: number): any[] {
-  return new Array(length).join(",").split(",");
+  return new Array(Math.floor(length)).join(",").split(",");
 }
