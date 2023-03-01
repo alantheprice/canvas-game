@@ -5,6 +5,7 @@ import { Direction } from "../../drawing/direction.enum";
 import { wingHeight, wingLayout, wingWidth } from "./wing.layout";
 import { getMovementFrameDistance } from "../../constants";
 import preRender from "../../drawing/preRender";
+import { MISSLE } from "../../weapons/missle";
 
 const layout = {
   frame: rect(0, 0, wingWidth, wingHeight),
@@ -25,6 +26,10 @@ export function getWing(
       {
         weapon: LASER,
         locations: [point(7, 0), point(wingWidth - 7, 0)],
+      },
+      {
+        weapon: MISSLE,
+        locations: [point(9, 0), point(wingWidth - 9, 0)],
       },
     ],
     shootingPattern: "manual",
