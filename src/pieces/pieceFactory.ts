@@ -68,12 +68,12 @@ export function getPieceFactory(
       if (config.movementType === PieceMovement.scrollDown) {
         const randomize = Math.random();
         if (randomize > 0.995 && currentHealth > 0) {
-          fireLasers();
+          fireWeapons();
         }
       }
       if (firingDepressed) {
         if (shouldFire) {
-          fireLasers();
+          fireWeapons();
           shouldFire = false;
         } else {
           firingThreshold++;
@@ -118,8 +118,8 @@ export function getPieceFactory(
         },
       });
     }
-
-    function fireLasers() {
+ 
+    function fireWeapons() {
       config.weapons.forEach((w) => {
         w.locations.forEach((l) => {
           fire({
