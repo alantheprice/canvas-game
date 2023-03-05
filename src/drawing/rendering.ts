@@ -4,7 +4,6 @@ import { Circle, point, Point, rect, Rect } from "../drawing/dimensions";
 import { LayoutConfiguration, PieceConfiguration } from "../pieces/types";
 import { arrayAtLength } from "../utils";
 import colors from "./colors";
-import { Direction } from "./direction.enum";
 import { Position } from "./position.enum";
 
 type XY = [number, number];
@@ -113,21 +112,21 @@ export function createRenderer(draw: Draw): Renderer {
         : currentLocation.y + pieceFrame.h + padding
     );
 
-    const layoutData: LayoutData[] = arrayAtLength(
-      healthDisplay.initial / 10
-    ).map((_, index) => {
-      const health = healthDisplay.current - (index + 1) * 2;
-      const fill = health > 1 ? colors.green : colors.transparent;
-      return [
-        "c",
-        { x: index * 15, y: 0, diameter: 5 },
-        fill,
-        {
-          width: 2,
-          color: health >= 0 ? colors.green : colors.red,
-        },
-      ];
-    });
+    // const layoutData: LayoutData[] = arrayAtLength(
+    //   healthDisplay.initial / 10
+    // ).map((_, index) => {
+    //   const health = healthDisplay.current - (index + 1) * 2;
+    //   const fill = health > 1 ? colors.green : colors.transparent;
+    //   return [
+    //     "c",
+    //     { x: index * 15, y: 0, diameter: 5 },
+    //     fill,
+    //     {
+    //       width: 2,
+    //       color: health >= 0 ? colors.green : colors.red,
+    //     },
+    //   ];
+    // });
     const currentHealthWidth = Math.floor(
       pieceFrame.w * (healthDisplay.current / healthDisplay.initial)
     );
@@ -165,18 +164,19 @@ export function createRenderer(draw: Draw): Renderer {
     currentLocation: Point,
     config?: RenderingConfiguration
   ) {
+    const preRendered = layoutConfiguration?.preRendered[config?.healthDisplay?.position]  
     const setHealth = () => {
       if (config && config.healthDisplay) {
         renderHealthDisplay(
           config.healthDisplay,
           currentLocation,
-          layoutConfiguration.layout.frame
+          layoutConfiguration?.layout.frame
         );
       }
     };
 
-    if (layoutConfiguration.preRendered instanceof HTMLImageElement) {
-      renderImage(layoutConfiguration.preRendered, currentLocation);
+    if (preRendered && preRendered instanceof HTMLImageElement) {
+      renderImage(preRendered, currentLocation);
       setHealth();
       return;
     }

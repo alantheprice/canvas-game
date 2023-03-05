@@ -12,15 +12,16 @@ const layout = {
   layoutData: wingLayout,
 };
 
-let preRendered: HTMLImageElement = preRender(layout);
-
 export function getWing(
   overrides?: Partial<PieceConfiguration>
 ): PieceConfiguration {
   return {
     team: "blue",
     layout,
-    preRendered: preRendered,
+    preRendered: {
+      [Direction.DOWN]: preRender(layout, Direction.DOWN),
+      [Direction.UP]: preRender(layout, Direction.UP),
+    },
     speed: getMovementFrameDistance,
     weapons: [
       {
@@ -40,3 +41,4 @@ export function getWing(
     ...(overrides || {}),
   };
 }
+ 

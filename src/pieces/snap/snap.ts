@@ -10,7 +10,6 @@ const layout = {
   frame: rect(0, 0, snapWidth, snapHeight),
   layoutData: snapLayout,
 };
-let preRendered: HTMLImageElement = preRender(layout);
 
 export function getSnap(
   overrides?: Partial<PieceConfiguration>
@@ -18,7 +17,10 @@ export function getSnap(
   return {
     team: "red",
     layout: layout,
-    preRendered: preRendered,
+    preRendered: {
+      [Direction.DOWN]: preRender(layout, Direction.DOWN),
+      [Direction.UP]: preRender(layout, Direction.UP),
+    },
     speed: () => getMovementFrameDistance() / 3,
     weapons: [
       {

@@ -1,8 +1,8 @@
 import { distancePerFrame, getFramerate } from "../constants";
-import { Point, Rect, rectFunctions } from "../drawing/dimensions";
+import { Rect, rectFunctions } from "../drawing/dimensions";
 import { Direction } from "../drawing/direction.enum";
 import { Renderer } from "../drawing/rendering";
-import { FireConfiguration, Piece, Weapon } from "../pieces/types";
+import { FireConfiguration, Piece } from "../pieces/types";
 
 export function getWeaponsTracker(
   edges: Rect,
@@ -54,7 +54,7 @@ export function getWeaponsTracker(
         renderer(
           {
             layout: {
-              layoutData: w2.hit ? w.weapon.hitLayout(1) : w.weapon.layout,
+              layoutData: w2.hit ? w.weapon.hitLayout(1) : w.weapon.layout.layoutData,
             },
           },
           location
@@ -62,9 +62,9 @@ export function getWeaponsTracker(
       } else {
         renderer(
           {
-            preRendered: w.weapon.preRendered,
+            preRendered: w.weapon.preRendered[w.direction],
             layout: {
-              layoutData: w.weapon.layout,
+              layoutData: w.weapon.layout.layoutData,
             },
           },
           location

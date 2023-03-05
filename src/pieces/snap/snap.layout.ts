@@ -1,15 +1,15 @@
 import { LayoutData } from "../../drawing/rendering";
 
-export const snapHeight = 45;
-export const snapWidth = 45;
+export const snapHeight = 35;
+export const snapWidth = 35;
 
 export const snapLayout: LayoutData[] = [
   [
     "c",
     {
       x: snapWidth / 2,
-      y: 15,
-      diameter: 12,
+      y: snapWidth / 2,
+      diameter: snapWidth / 3,
     },
     "#944",
     { width: 4, color: "#844" },

@@ -1,6 +1,6 @@
-import { Point, Rect } from "../drawing/dimensions";
+import { Point } from "../drawing/dimensions";
 import { Direction } from "../drawing/direction.enum";
-import { Layout, LayoutData, Renderer } from "../drawing/rendering";
+import { Layout, LayoutData } from "../drawing/rendering";
 
 export enum PieceMovement {
   keyboard,
@@ -8,11 +8,9 @@ export enum PieceMovement {
   scrollDown,
 }
 
-export interface Weapon {
+export interface Weapon extends LayoutConfiguration {
   speed: number;
   power: number;
-  layout: LayoutData[];
-  preRendered?: HTMLImageElement;
   hitLayout: (frames: number) => LayoutData[];
 }
 
@@ -28,7 +26,10 @@ export interface FireConfiguration {
 }
 
 export interface LayoutConfiguration {
-  preRendered?: HTMLImageElement;
+  preRendered?: {
+    [Direction.DOWN]: HTMLImageElement;
+    [Direction.UP]: HTMLImageElement;
+  }
   layout: Layout;
 }
 

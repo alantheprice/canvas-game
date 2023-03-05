@@ -48,7 +48,8 @@ export interface Draw {
  */
 export default function canvasDrawing(
   canvas: HTMLCanvasElement,
-  dimensions?: Rect
+  dimensions?: Rect,
+  rotate180?: boolean
 ) {
   const canvasHeight = dimensions ? dimensions.h : window.innerHeight;
   const canvasWidth = dimensions ? dimensions.w : window.innerWidth;
@@ -60,7 +61,13 @@ export default function canvasDrawing(
   canvas.style.width = canvasWidth + "px";
   canvas.style.height = canvasHeight + "px";
   const ctx = canvas.getContext("2d");
-  ctx.scale(ratio, ratio);
+  
+  if (rotate180) {
+    ctx?.translate(canvas.width, canvas.height);
+    ctx?.rotate(Math.PI);
+  }
+
+  ctx?.scale(ratio, ratio);
   const edges = rect(0, 0, canvas.width / ratio, canvas.height / ratio);
 
   function translation(translatePoint?: Point) {
@@ -153,7 +160,7 @@ export default function canvasDrawing(
     ctx.closePath();
   }
 
-  function drawImage(image: HTMLImageElement, translationPoint?: Point) {
+  function drawImage(image: HTMLImageElement, translationPoint?: Point, rotate180?:boolean) {
     const tr = translation(translationPoint);
     const frame = rect(0, 0, image.naturalWidth, image.naturalHeight);
     const scaledFrame = rectFunctions(frame).scale(1 / ratio);

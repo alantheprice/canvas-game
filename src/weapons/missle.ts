@@ -1,5 +1,7 @@
 import { rect } from "../drawing/dimensions";
+import { Direction } from "../drawing/direction.enum";
 import preRender from "../drawing/preRender";
+import { LayoutData } from "../drawing/rendering";
 import { Weapon } from "../pieces/types";
 
 const missleWidth = 14;
@@ -9,7 +11,7 @@ const missleColor = "#446";
 const highlightColor = "#555";
 const bodyHighlightColor = "#666";
 
-const layoutData = [
+const layoutData:LayoutData[] = [
   [ // missle body
     "r",
     { x: missleWidth / 3, y: 3, w: missleWidth / 3, h: missleHeight - 6 },
@@ -72,16 +74,19 @@ const layoutData = [
   ],
 ];
 
-const preRendered = preRender({ 
+const layout = { 
   layoutData: layoutData,
   frame: rect(0, 0, 20, 30),
-});
+};
 
 export const MISSLE: Weapon = {
   speed: 450,
   power: 50,
-  layout: layoutData,
-  preRendered: preRendered,
+  layout,
+  preRendered: {
+    [Direction.DOWN]: preRender(layout, Direction.DOWN),
+    [Direction.UP]: preRender(layout, Direction.UP),
+  },
   hitLayout: (explosionFrames: number) => [
     [
       "c",

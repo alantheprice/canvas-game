@@ -10,15 +10,17 @@ const layout = {
   frame: rect(0, 0, fighterWidth, fighterHeight),
   layoutData: fighterLayout,
 };
-let preRendered: HTMLImageElement = preRender(layout);
 
 export function getFighter(
   overrides?: Partial<PieceConfiguration>
 ): PieceConfiguration {
   return {
     team: "red",
-    layout: layout,
-    preRendered: preRendered,
+    layout: layout,  
+    preRendered: {
+      [Direction.DOWN]: preRender(layout, Direction.DOWN),
+      [Direction.UP]: preRender(layout, Direction.UP),
+    },
     speed: () => getMovementFrameDistance() / 5,
     weapons: [
       {
