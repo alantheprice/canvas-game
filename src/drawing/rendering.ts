@@ -164,7 +164,11 @@ export function createRenderer(draw: Draw): Renderer {
     currentLocation: Point,
     config?: RenderingConfiguration
   ) {
-    const preRendered = layoutConfiguration?.preRendered[config?.healthDisplay?.position]  
+    let preRendered: HTMLImageElement|null = null;
+    const position = config?.healthDisplay?.position;
+    if (layoutConfiguration.preRendered && position) {
+      preRendered = layoutConfiguration?.preRendered[position];
+    }
     const setHealth = () => {
       if (config && config.healthDisplay) {
         renderHealthDisplay(
