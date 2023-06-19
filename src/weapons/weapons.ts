@@ -62,12 +62,10 @@ export function getWeaponsTracker(
       } else {
         renderer(
           {
-            preRendered: w.weapon.preRendered[w.direction],
-            layout: {
-              layoutData: w.weapon.layout.layoutData,
-            },
+            ...w.weapon
           },
-          location
+          location,
+          {directionOverride: w.direction}
         );
       }
 

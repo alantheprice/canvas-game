@@ -30,6 +30,7 @@ export interface HealthDisplay {
 export interface RenderingConfiguration {
   showShadow?: boolean;
   healthDisplay?: HealthDisplay;
+  directionOverride?: Position;
 }
 
 type RendererMap = Record<
@@ -165,7 +166,7 @@ export function createRenderer(draw: Draw): Renderer {
     config?: RenderingConfiguration
   ) {
     let preRendered: HTMLImageElement|null = null;
-    const position = config?.healthDisplay?.position;
+    const position = config?.directionOverride || config?.healthDisplay?.position;
     if (layoutConfiguration.preRendered && position) {
       preRendered = layoutConfiguration?.preRendered[position];
     }
