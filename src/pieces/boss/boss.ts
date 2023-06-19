@@ -5,7 +5,7 @@ import { Direction } from "../../drawing/direction.enum";
 import { bossHeight, bossLayout, bossWidth } from "./boss.layout";
 import { getMovementFrameDistance } from "../../constants";
 import preRender from "../../drawing/preRender";
-import { MISSLE } from "../../weapons/missle";
+import { MISSILE } from "../../weapons/missile";
 
 const layout = {
   frame: rect(0, 0, bossWidth, bossHeight),
@@ -33,11 +33,11 @@ export function getBoss(
         ],
       },
       {
-        weapon: MISSLE,
+        weapon: MISSILE,
         locations: [point(bossWidth/2 - 10, 0)],
       },
       {
-        weapon: MISSLE,
+        weapon: MISSILE,
         locations: [point(bossWidth/2 + 10, 0)],
       },
     ],

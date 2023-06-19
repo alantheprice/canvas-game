@@ -4,34 +4,34 @@ import preRender from "../drawing/preRender";
 import { LayoutData } from "../drawing/rendering";
 import { Weapon } from "../pieces/types";
 
-const missleWidth = 14;
-const missleHeight = 30;
+const MISSILEWidth = 14;
+const MISSILEHeight = 30;
 
-const missleColor = "#446";
+const MISSILEColor = "#446";
 const highlightColor = "#555";
 const bodyHighlightColor = "#666";
 
 const layoutData:LayoutData[] = [
-  [ // missle body
+  [ // MISSILE body
     "r",
-    { x: missleWidth / 3, y: 3, w: missleWidth / 3, h: missleHeight - 6 },
-    missleColor,
+    { x: MISSILEWidth / 3, y: 3, w: MISSILEWidth / 3, h: MISSILEHeight - 6 },
+    MISSILEColor,
   ],
-  [ // missle front
+  [ // MISSILE front
     "p",
     [
-      [4, missleWidth/2],
-      [missleWidth/2, 0],
-      [missleWidth - 4, missleWidth/2],
+      [4, MISSILEWidth/2],
+      [MISSILEWidth/2, 0],
+      [MISSILEWidth - 4, MISSILEWidth/2],
     ],
-    missleColor,
+    MISSILEColor,
     3,
   ],
   [// body highlight
     "p", 
     [
-      [missleWidth/2 - 1, 4],
-      [missleWidth/2 - 1, missleHeight - 14],
+      [MISSILEWidth/2 - 1, 4],
+      [MISSILEWidth/2 - 1, MISSILEHeight - 14],
     ],
     bodyHighlightColor,
     1,
@@ -39,26 +39,26 @@ const layoutData:LayoutData[] = [
   [// tail wing left
     "p", 
     [
-      [2, missleHeight - 10],
-      [2, missleHeight],
+      [2, MISSILEHeight - 10],
+      [2, MISSILEHeight],
     ],
-    missleColor,
+    MISSILEColor,
     2,
   ],
   [// tail wing right
     "p", 
     [
-      [missleWidth - 3, missleHeight - 10],
-      [missleWidth - 3, missleHeight],
+      [MISSILEWidth - 3, MISSILEHeight - 10],
+      [MISSILEWidth - 3, MISSILEHeight],
     ],
-    missleColor,
+    MISSILEColor,
     2,
   ],
   [// tail wing left highlight
     "p", 
     [
-      [3, missleHeight - 12],
-      [3, missleHeight - 5],
+      [3, MISSILEHeight - 12],
+      [3, MISSILEHeight - 5],
     ],
     highlightColor,
     2,
@@ -66,8 +66,8 @@ const layoutData:LayoutData[] = [
   [// tail wing right highlight
     "p", 
     [
-      [missleWidth - 5, missleHeight - 12],
-      [missleWidth - 5, missleHeight - 5],
+      [MISSILEWidth - 5, MISSILEHeight - 12],
+      [MISSILEWidth - 5, MISSILEHeight - 5],
     ],
     highlightColor,
     2,
@@ -79,13 +79,13 @@ const layout = {
   frame: rect(0, 0, 20, 30),
 };
 
-export const MISSLE: Weapon = {
+export const MISSILE: Weapon = {
   speed: 450,
   power: 50,
   layout,
   preRendered: {
     [Direction.DOWN]: preRender(layout, Direction.DOWN),
-    [Direction.UP]: preRender(layout, Direction.UP),
+    [Direction.UP]: preRender(layout, Direction.DOWN),
   },
   hitLayout: (explosionFrames: number) => [
     [
