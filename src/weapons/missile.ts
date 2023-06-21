@@ -85,10 +85,10 @@ export const MISSILE: Weapon = {
   layout,
   preRendered: {
     [Direction.DOWN]: preRender(layout, Direction.DOWN),
-    [Direction.UP]: preRender(layout, Direction.DOWN),
+    [Direction.UP]: preRender(layout, Direction.UP),
   },
   hitLayout: (explosionFrames: number) => [
-    [
+    [  
       "c",
       { x: 0, y: 5, diameter: Math.floor(explosionFrames * 2) },
       "#FA5",
