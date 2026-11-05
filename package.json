@@ -4,13 +4,13 @@
   "description": "game test in html",
   "main": "index.js",
   "scripts": {
-    "build": "npm run package && webpack --config webpack.config.js --production && rm -fr ./docs && mv ./dist ./docs",
-    "build:dev": "npm run package && webpack --config webpack.config.js --development",
-    "dev-server": "webpack-dev-server --config webpack.config.js --open",
-    "package": "/bin/bash package.sh",
+    "build": "npm run package && bash scripts/with-legacy-openssl.sh webpack --config webpack.config.js --mode production && rm -fr ./docs && mv ./dist ./docs",
+    "build:dev": "npm run package && bash scripts/with-legacy-openssl.sh webpack --config webpack.config.js --mode development",
+    "dev-server": "bash scripts/with-legacy-openssl.sh webpack-dev-server --config webpack.config.js --open",
+    "package": "bash package.sh",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run build:dev && npm run dev-server",
-    "start-docker": "sudo /bin/bash develop.sh"
+    "start-docker": "sudo bash develop.sh"
   },
   "author": "alan@theprices.us",
   "devDependencies": {
