@@ -6,3 +6,7 @@ build
 # The tracked prebuilt copy goes stale, so keep the fresh build out of git.
 docs
 
+# Local state written by the hosting tool (wrangler) when previewing the build:
+# sqlite caches and logs under .wrangler/state; never part of the app source.
+.wrangler
+
