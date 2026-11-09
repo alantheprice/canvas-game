@@ -2,3 +2,7 @@ node_modules
 dist
 build
 
+# docs is the build output served by the host; every build regenerates it.
+# The tracked prebuilt copy goes stale, so keep the fresh build out of git.
+docs
+
